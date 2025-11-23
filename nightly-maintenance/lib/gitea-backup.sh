@@ -35,3 +35,33 @@ if (( timer == 0 )); then
 else
     log "Gitea успешно остановлена за ${timer} секунд"
 fi
+
+
+###################################
+# Проверка целостности SQLite-базы
+###################################
+
+# Проверка наличия sqlite3
+if [[ -f "$GITEA_DB_FILE" ]]; then
+    log "Проверка целостности SQLite-базы..."
+
+    SQLITE_RESULT=$(sqlite3 "$GITEA_DB_FILE" "PRAGMA integrity_check;" 2>&1)
+
+    if [[ "$SQLITE_RESULT" != "ok" ]]; then
+        log "ОШИБКА: Целостность базы данных нарушена"
+
+        # построчно выводим журнал ошибок SQLITE_RESULT
+        while IFS=read -r line; do
+             log "$line"
+        done <<< "$SQLITE_RESULT"
+
+        log "Прерывание сценария резервного копирования Gitea"
+        exit 1
+    fi
+else
+    log "ОШИБКА: Файл базы данных не найден"
+    log "Прерывание сценария резервного копирования Gitea"
+    exit 1
+fi
+
+log "Целостность SQLite-базы подтверждена"
