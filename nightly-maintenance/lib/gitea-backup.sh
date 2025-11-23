@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Скрипт резервного копирования данных Gitea
 
-log "Запущен скрипт резервного копирования Gitea..."
+log "Запущен сценарий резервного копирования Gitea..."
 
 
 ######################
@@ -84,7 +84,7 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
 
         log "Проверка репозитория ${repo}..."
 
-        if  git -C "$repo" fsck --full --strict >> "$LOG_FILE" 2>&1; then
+        if  git -C "$repo" fsck --full --strict >> "$GITEA_LOG_FILE" 2>&1; then
             log "Репозиторий ${repo} в порядке"
         else
             log "ОШИБКА: Репозиторий ${repo} повреждён"
@@ -95,3 +95,26 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
 done
 
 log "Проверка Git-репозиториев завершена успешно"
+
+
+#######################
+# Создание дампа Gitea
+#######################
+
+log "Начато создание дампа Gitea..."
+
+# делаем дамп gitea, игнорируя LFS-хранилище
+# логгируем весь вывод gitea dump, включая ошибки
+# запускаем НЕ от root, так как root отклоняется самой gitea
+if sudo -u gitea "$GITEA_BIN_FILE" dump \
+    -c "$GITEA_CONFIG_FILE" \
+    --skip-lfs-data \
+    --file "$GITEA_DUMP_DIR"/"$GITEA_DUMP_NAME" \
+    >> "$GITEA_LOG_FILE" 2>&1
+then
+    log "Создание дампа Gitea успешно завершено"
+else
+    log "ОШИБКА: Создание дампа Gitea не удалось"
+    log "Прерывание сценария резервного копирования Gitea"
+    exit 1
+fi
