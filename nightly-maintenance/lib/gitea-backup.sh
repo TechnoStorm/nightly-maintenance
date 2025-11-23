@@ -4,7 +4,9 @@
 log "Начато резервное копирование Gitea..."
 
 
-### Останавливаем Gitea ###
+######################
+# Останавливаем Gitea
+######################
 
 # если сервис запущен - останавливаем его
 if systemctl is-active --quiet gitea; then
@@ -25,6 +27,7 @@ while systemctl is-active --quiet gitea; do
         exit 1
     fi
 done
+
 
 # если gitea была остановлена до выполнения скрипта, то сообщаем об этом
 if (( timer == 0 )); then
