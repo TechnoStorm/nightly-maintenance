@@ -17,7 +17,6 @@ source "$BASE_DIR/config.sh"
 
 # функция логгирования
 log() {
-
     local msg="[$(date '+%F %T')] $*"
     echo "$msg" >> "$LOG_FILE"
     echo "$msg"
