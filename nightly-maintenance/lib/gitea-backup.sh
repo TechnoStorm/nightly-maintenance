@@ -7,22 +7,28 @@ log "Начато резервное копирование Gitea..."
 ### Останавливаем Gitea ###
 
 # если сервис запущен - останавливаем его
-systemctl is-active --quiet gitea %% systemctl stop gitea
+if systemctl is-active --quiet gitea; then
+    systemctl stop gitea
+fi
 
 
 # проверка остановки сервиса
+MAX_WAIT=30 # макс. время ожидания остановки gitea
 timer=0
 while systemctl is-active --quiet gitea; do
-    sleep 5
-    ((timer+5)) # плюсуем +5 сек при каждой итерации
-    log "Ожидание остановки Gitea... ${timer} секунд прошло"
-
+    sleep 1
+    ((timer++))
     # проверяем: истекло-ли время ожидания?
-    if [[ $timer -ge 30 ]]; then
+    if (( timer >= MAX_WAIT )); then
         log "ОШИБКА: Остановка Gitea не удалась"
         log "Прерывание сценария резервного копирования Gitea"
         exit 1
     fi
 done
 
-log "Gitea успешно остановлена за ${timer} секунд"
+# если gitea была остановлена до выполнения скрипта, то сообщаем об этом
+if (( timer == 0 )); then
+    log "Gitea была уже остановлена"
+else
+    log "Gitea успешно остановлена за ${timer} секунд"
+fi
