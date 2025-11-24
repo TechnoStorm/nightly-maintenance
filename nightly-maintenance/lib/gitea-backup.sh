@@ -114,7 +114,7 @@ if [[ -f "$GITEA_DB_FILE" ]]; then
         exit 1
     fi
 else
-    log "ОШИБКА: Файл SQLite-базы данных Gitea не найден"
+    log "ОШИБКА: Файл SQLite-базы Gitea не найден"
     log "Сценарий резервного копирования Gitea прерван"
     exit 1
 fi
