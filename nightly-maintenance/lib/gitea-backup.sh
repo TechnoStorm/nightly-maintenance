@@ -46,6 +46,13 @@ fi
 log "Проверка целостности SQLite-базы Gitea..."
 
 # Проверка наличия sqlite3
+if ! command -v sqlite3 >/dev/null 2>&1; then
+    log "ОШИБКА: sqlite3 не установлен"
+    log "Прерывание сценария резервного копирования Gitea"
+    exit 1
+fi
+
+# если файл БД существует, то проверяем целостность
 if [[ -f "$GITEA_DB_FILE" ]]; then
 
     SQLITE_RESULT=$(sqlite3 "$GITEA_DB_FILE" "PRAGMA integrity_check;" 2>&1)
