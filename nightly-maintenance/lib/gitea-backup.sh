@@ -176,7 +176,6 @@ log "Перезапуск сервиса Gitea..."
 
 systemctl start gitea
 
-MAX_WAIT=30 # макс. время ожидания перезапуска gitea
 timer=0
 
 # проверка запуска сервиса
