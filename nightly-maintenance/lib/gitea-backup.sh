@@ -166,3 +166,30 @@ else
     log "ОШИБКА: rsync завершился с ошибкой -- LFS-хранилище НЕ синхронизировано"
     exit 1
 fi
+
+
+###################
+# Перезапуск Gitea
+###################
+
+log "Перезапуск сервиса Gitea..."
+
+systemctl start gitea
+
+MAX_WAIT=30 # макс. время ожидания перезапуска gitea
+timer=0
+
+# проверка запуска сервиса
+while ! systemctl is-active --quiet gitea; do
+    sleep 1
+    ((timer++))
+
+    #проверяем: исиекло-ли время ожидания?
+    if (( timer >= MAX_WAIT )); then
+        log "ОШИБКА: Перезапуск Gitea не удался"
+        log "Сценарий резервного копирования Gitea прерван"
+        exit 1
+    fi
+fi
+
+log "Сервис Gitea успешно запущен за ${timer} секунд"
