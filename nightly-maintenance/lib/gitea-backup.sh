@@ -29,7 +29,7 @@ fi
 
 
 # проверка остановки сервиса
-MAX_WAIT=30 # макс. время ожидания остановки gitea
+MAX_WAIT=30 # максимальное время ожидания
 timer=0
 while systemctl is-active --quiet gitea; do
     sleep 1
