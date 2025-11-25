@@ -152,3 +152,16 @@ if ! command -v rsync >/dev/null 2>&1; then
     log "Сценарий резервного копирования Gitea прерван"
     exit 1
 fi
+
+
+# выполняем зеркалирование
+if rsync -aH --delete --stats \
+    "$GITEA_LFS_DIR"/ \
+    "$GITEA_LFS_BACKUP_DIR"/ \
+    >> "$GITEA_LOG_FILE" 2>&1; then
+
+    log "Зеркалирование LFS-хранилища успешно завершено"
+else
+    log "ОШИБКА: rsync завершился с ошибкой -- LFS-хранилище НЕ синхронизировано"
+    exit 1
+fi
