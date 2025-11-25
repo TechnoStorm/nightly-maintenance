@@ -10,41 +10,13 @@ log "Запущен сценарий резервного копирования
 
 log "Проверка наличия целевых директорий и файлов..."
 
-if [[ ! -f "$GITEA_BIN_FILE" ]]; then
-    log "ОШИБКА: Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
-    log "Сценарий резервного копирования Gitea прерван"
-    exit 1
-fi
+[[ -f "$GITEA_BIN_FILE" ]]             || fail "ОШИБКА: Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
+[[ -f "$GITEA_CONFIG_FILE" ]]          || fail "ОШИБКА: Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
+[[ -f "$GITEA_DB_FILE" ]]              || fail "ОШИБКА: SQLite-база Gitea не найдена: $GITEA_DB_FILE"
+[[ -d "$GITEA_GIT_DIR" ]]              || fail "ОШИБКА: Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
+[[ -d "$GITEA_LFS_DIR" ]]              || fail "ОШИБКА: Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
+[[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "ОШИБКА: Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
 
-if [[ ! -f "$GITEA_CONFIG_FILE" ]]; then
-    log "ОШИБКА: Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
-    log "Сценарий резервного копирования Gitea прерван"
-    exit 1
-fi
-
-if [[ ! -f "$GITEA_DB_FILE" ]]; then
-    log "ОШИБКА: SQLite-база Gitea не найдена: $GITEA_DB_FILE"
-    log "Сценарий резервного копирования Gitea прерван"
-    exit 1
-fi
-
-if [[ ! -d "$GITEA_GIT_DIR" ]]; then
-    log "ОШИБКА: Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
-    log "Сценарий резервного копирования Gitea прерван"
-    exit 1
-fi
-
-if [[ ! -d "$GITEA_LFS_DIR" ]]; then
-    log "ОШИБКА: Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
-    log "Сценарий резервного копирования Gitea прерван"
-    exit 1
-fi
-
-if [[ ! -d "$GITEA_LFS_BACKUP_DIR" ]]; then
-    log "ОШИБКА: Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
-    log "Сценарий резервного копирования Gitea прерван"
-    exit 1
-fi
 
 log "Все целевые директории и файлы обнаружены"
 
