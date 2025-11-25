@@ -183,9 +183,9 @@ while ! systemctl is-active --quiet gitea; do
     sleep 1
     ((timer++))
 
-    #проверяем: исиекло-ли время ожидания?
+    #проверяем: истекло-ли время ожидания?
     if (( timer >= MAX_WAIT )); then
-        log "ОШИБКА: Перезапуск Gitea не удался"
+        log "ОШИБКА: Перезапуск сервиса Gitea не удался"
         log "Сценарий резервного копирования Gitea прерван"
         exit 1
     fi
