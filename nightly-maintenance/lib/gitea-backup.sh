@@ -11,33 +11,23 @@ log "Проверка целостности SQLite-базы Gitea..."
 
 # Проверка наличия sqlite3
 if ! command -v sqlite3 >/dev/null 2>&1; then
-    log "ОШИБКА: sqlite3 не установлен"
-    log "Этап резервного копирования данных Gitea прерван"
-    exit 1
+    fail "ОШИБКА: sqlite3 не установлен"
 fi
 
 
-# если файл БД существует, то проверяем целостность
-if [[ -f "$GITEA_DB_FILE" ]]; then
+SQLITE_RESULT=$(sqlite3 "$GITEA_DB_FILE" "PRAGMA integrity_check;" 2>&1)
 
-    SQLITE_RESULT=$(sqlite3 "$GITEA_DB_FILE" "PRAGMA integrity_check;" 2>&1)
+if [[ "$SQLITE_RESULT" != "ok" ]]; then
+    log "ОШИБКА: Целостность SQLite базы Gitea нарушена"
 
-    if [[ "$SQLITE_RESULT" != "ok" ]]; then
-        log "ОШИБКА: Целостность SQLite базы Gitea нарушена"
+    # построчно выводим журнал ошибок SQLITE_RESULT
+    while IFS=read -r line; do
+         log "$line"
+     done <<< "$SQLITE_RESULT"
 
-        # построчно выводим журнал ошибок SQLITE_RESULT
-        while IFS=read -r line; do
-             log "$line"
-        done <<< "$SQLITE_RESULT"
-
-        log "Этап резервного копирования данных Gitea прерван"
-        exit 1
-    fi
-else
-    log "ОШИБКА: Файл SQLite-базы Gitea не найден"
-    log "Этап резервного копирования данных Gitea прерван"
-    exit 1
+     fail "Прерван сценарий ночного техобслуживания NAS"
 fi
+
 
 log "Целостность SQLite-базы Gitea подтверждена"
 
