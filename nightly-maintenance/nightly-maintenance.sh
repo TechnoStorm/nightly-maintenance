@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Скрипт ночного техобслуживания NAS
 
-# принудительно прерываем скрипт при ошибках, и неинициализированных переменных
+# принудительно прерываем скрипт при ERRORх, и неинициализированных переменных
 set -euo pipefail
 
 
@@ -26,7 +26,7 @@ log() {
 
 # функция прерывания сценария при отсутствии целевых директорий и файлов
 fail() {
-    log "ОШИБКА: $*"
+    log "ERROR: $*"
     log "Прерван сценарий ночного техобслуживания NAS"
     exit 1
 }
@@ -44,7 +44,7 @@ trim_log() {
             mv -f "$tmp_file" "$LOG_FILE"
         else
             rm -f "$tmp_file"
-            log "ОШИБКА: Обрезка лога не удалась"
+            log "ERROR: Обрезка лога не удалась"
 
             # не прерываем скрипт через "fail()",
             # так-как функция всё равно выполняется в самом конце
@@ -64,15 +64,12 @@ log "Запущен сценарий ночного техобслуживани
 # Проверка наличия целевых директорий и файлов
 ###############################################
 
-[[ -f "$GITEA_BIN_FILE" ]]             || fail "ОШИБКА: Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
-[[ -f "$GITEA_CONFIG_FILE" ]]          || fail "ОШИБКА: Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
-[[ -f "$GITEA_DB_FILE" ]]              || fail "ОШИБКА: SQLite-база Gitea не найдена: $GITEA_DB_FILE"
-[[ -d "$GITEA_GIT_DIR" ]]              || fail "ОШИБКА: Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
-[[ -d "$GITEA_LFS_DIR" ]]              || fail "ОШИБКА: Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
-[[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "ОШИБКА: Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
-
-
-
+[[ -f "$GITEA_BIN_FILE" ]]             || fail "ERROR: Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
+[[ -f "$GITEA_CONFIG_FILE" ]]          || fail "ERROR: Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
+[[ -f "$GITEA_DB_FILE" ]]              || fail "ERROR: SQLite-база Gitea не найдена: $GITEA_DB_FILE"
+[[ -d "$GITEA_GIT_DIR" ]]              || fail "ERROR: Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
+[[ -d "$GITEA_LFS_DIR" ]]              || fail "ERROR: Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
+[[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "ERROR: Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
 
 
 ######################
@@ -96,7 +93,7 @@ while systemctl is-active --quiet gitea; do
 
     # проверяем: истекло-ли время ожидания?
     if (( timer >= MAX_WAIT )); then
-        fail "ОШИБКА: Остановка сервиса Gitea не удалась"
+        fail "ERROR: Остановка сервиса Gitea не удалась"
     fi
 done
 
@@ -115,6 +112,7 @@ fi
 
 source "$BASE_DIR/lib/gitea-backup.sh"
 
+
 ###################
 # Перезапуск Gitea
 ###################
@@ -132,7 +130,7 @@ while ! systemctl is-active --quiet gitea; do
 
     #проверяем: истекло-ли время ожидания?
     if (( timer >= MAX_WAIT )); then
-        fail "ОШИБКА: Перезапуск сервиса Gitea не удался"
+        fail "ERROR: Перезапуск сервиса Gitea не удался"
     fi
 fi
 
