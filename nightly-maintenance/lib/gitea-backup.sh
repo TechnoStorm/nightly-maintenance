@@ -64,13 +64,15 @@ log "Проверка Git-репозиториев завершена успеш
 
 log "Создание дампа Gitea..."
 
+DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
+
 # делаем дамп gitea, игнорируя LFS-хранилище
 # логгируем весь вывод gitea dump, включая ошибки
 # запускаем НЕ от root, так как root отклоняется самой gitea
 if sudo -u gitea "$GITEA_BIN_FILE" dump \
     -c "$GITEA_CONFIG_FILE" \
     --skip-lfs-data \
-    --file "$GITEA_DUMP_DIR"/"$GITEA_DUMP_NAME" \
+    --file "$GITEA_DUMP_DIR"/"${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" \
     >> "$GITEA_LOG_FILE" 2>&1
 then
     log "Создание дампа Gitea успешно завершено"
