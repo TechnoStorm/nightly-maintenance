@@ -11,6 +11,12 @@ BASE_DIR="$(dirname "$(readlink -f "$0")")"
 # читаем конфиг
 source "$BASE_DIR/config.sh"
 
+# принудительно создаём лог-директорию, чтобы отслеживать все ошибки
+if ! mkdir -p "$LOG_DIR"; then
+    echo ERROR: Не удалось создать директорию: $LOG_DIR
+    exit 1
+fi
+
 
 ######################
 # Определение функций
@@ -69,7 +75,6 @@ log "Запущен сценарий ночного техобслуживани
 [[ -f "$GITEA_DB_FILE" ]]              || fail "ERROR: SQLite-база Gitea не найдена: $GITEA_DB_FILE"
 [[ -d "$GITEA_GIT_DIR" ]]              || fail "ERROR: Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
 [[ -d "$GITEA_LFS_DIR" ]]              || fail "ERROR: Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
-[[ -d "$LOG_DIR" ]]                    || fail "ERROR: Директория лог-файла не найдена: $LOG_DIR"
 [[ -d "$GITEA_DUMP_DIR" ]]             || fail "ERROR: Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
 [[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "ERROR: Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
 
