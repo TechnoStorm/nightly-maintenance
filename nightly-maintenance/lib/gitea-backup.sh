@@ -18,14 +18,12 @@ fi
 SQLITE_RESULT=$(sqlite3 "$GITEA_DB_FILE" "PRAGMA integrity_check;" 2>&1)
 
 if [[ "$SQLITE_RESULT" != "ok" ]]; then
-    log "ERROR: Целостность SQLite базы Gitea нарушена"
-
     # построчно выводим журнал ошибок SQLITE_RESULT
     while IFS=read -r line; do
          log "$line"
      done <<< "$SQLITE_RESULT"
 
-     fail "Прерван сценарий ночного техобслуживания NAS"
+     fail "Целостность SQLite базы Gitea нарушена"
 fi
 
 
