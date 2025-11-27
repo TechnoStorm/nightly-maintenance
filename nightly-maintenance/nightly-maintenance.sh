@@ -70,13 +70,13 @@ log "Запущен сценарий ночного техобслуживани
 # Проверка наличия целевых директорий и файлов
 ###############################################
 
-[[ -f "$GITEA_BIN_FILE" ]]             || fail "ERROR: Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
-[[ -f "$GITEA_CONFIG_FILE" ]]          || fail "ERROR: Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
-[[ -f "$GITEA_DB_FILE" ]]              || fail "ERROR: SQLite-база Gitea не найдена: $GITEA_DB_FILE"
-[[ -d "$GITEA_GIT_DIR" ]]              || fail "ERROR: Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
-[[ -d "$GITEA_LFS_DIR" ]]              || fail "ERROR: Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
-[[ -d "$GITEA_DUMP_DIR" ]]             || fail "ERROR: Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
-[[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "ERROR: Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
+[[ -f "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
+[[ -f "$GITEA_CONFIG_FILE" ]]          || fail "Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
+[[ -f "$GITEA_DB_FILE" ]]              || fail "SQLite-база Gitea не найдена: $GITEA_DB_FILE"
+[[ -d "$GITEA_GIT_DIR" ]]              || fail "Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
+[[ -d "$GITEA_LFS_DIR" ]]              || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
+[[ -d "$GITEA_DUMP_DIR" ]]             || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
+[[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
 
 
 ######################
@@ -100,7 +100,7 @@ while systemctl is-active --quiet gitea; do
 
     # проверяем: истекло-ли время ожидания?
     if (( timer >= MAX_WAIT )); then
-        fail "ERROR: Остановка сервиса Gitea не удалась"
+        fail "Остановка сервиса Gitea не удалась"
     fi
 done
 
@@ -128,7 +128,7 @@ log "Перезапуск сервиса Gitea..."
 
 # проверка удачности запуска на уровне systemctl
 if ! systemctl start gitea; then
-    fail "ERROR: systemctl не смог запустить сервис Gitea"
+    fail "systemctl не смог запустить сервис Gitea"
 fi
 
 
@@ -140,7 +140,7 @@ while ! systemctl is-active --quiet gitea; do
 
     #проверяем: истекло-ли время ожидания?
     if (( timer >= MAX_WAIT )); then
-        fail "ERROR: Перезапуск сервиса Gitea не удался"
+        fail "Перезапуск сервиса Gitea не удался"
     fi
 fi
 

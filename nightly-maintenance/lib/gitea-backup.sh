@@ -11,7 +11,7 @@ log "Проверка целостности SQLite-базы Gitea..."
 
 # Проверка наличия sqlite3
 if ! command -v sqlite3 >/dev/null 2>&1; then
-    fail "ERROR: sqlite3 не установлен"
+    fail "sqlite3 не установлен"
 fi
 
 
@@ -49,7 +49,7 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
         if  git -C "$repo" fsck --full --strict >> "$GITEA_LOG_FILE" 2>&1; then
             log "Репозиторий ${repo} в порядке"
         else
-            fail "ERROR: Репозиторий ${repo} повреждён"
+            fail "Репозиторий ${repo} повреждён"
         fi
     fi
 done
@@ -76,7 +76,7 @@ if sudo -u gitea "$GITEA_BIN_FILE" dump \
 then
     log "Создание дампа Gitea успешно завершено"
 else
-    fail "ERROR: Создание дампа Gitea не удалось"
+    fail "Создание дампа Gitea не удалось"
 fi
 
 
@@ -88,7 +88,7 @@ log "Зеркалирование LFS-хранилища..."
 
 # Проверка наличия rsync
 if ! command -v rsync >/dev/null 2>&1; then
-    fail "ERROR: rsync не установлен"
+    fail "rsync не установлен"
 fi
 
 
@@ -100,7 +100,7 @@ if rsync -aH --delete --stats \
 
     log "Зеркалирование LFS-хранилища успешно завершено"
 else
-    fail "ERROR: rsync завершился с ошибкой -- LFS-хранилище НЕ синхронизировано"
+    fail "rsync завершился с ошибкой -- LFS-хранилище НЕ синхронизировано"
 fi
 
 log "Этап резервного копирования данных Gitea завершён"
