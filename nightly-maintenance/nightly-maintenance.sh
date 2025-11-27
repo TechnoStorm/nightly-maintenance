@@ -13,7 +13,7 @@ source "$BASE_DIR/config.sh"
 
 # принудительно создаём лог-директорию, чтобы отслеживать все ошибки
 if ! mkdir -p "$LOG_DIR"; then
-    echo ERROR: Не удалось создать директорию: $LOG_DIR
+    echo "ERROR: Не удалось создать директорию: $LOG_DIR"
     exit 1
 fi
 
