@@ -126,11 +126,14 @@ source "$BASE_DIR/lib/gitea-backup.sh"
 
 log "Перезапуск сервиса Gitea..."
 
-systemctl start gitea
+# проверка удачности запуска на уровне systemctl
+if ! systemctl start gitea; then
+    fail "ERROR: systemctl не смог запустить сервис Gitea"
+fi
 
+
+# проверка удачности запуска на уровне сервиса
 timer=0
-
-# проверка запуска сервиса
 while ! systemctl is-active --quiet gitea; do
     sleep 1
     ((timer++))
