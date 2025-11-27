@@ -12,7 +12,6 @@ log "Проверка целостности SQLite-базы Gitea..."
 # Проверка наличия sqlite3
 if ! command -v sqlite3 >/dev/null 2>&1; then
     fail "ERROR: sqlite3 не установлен"
-    exit 1
 fi
 
 
