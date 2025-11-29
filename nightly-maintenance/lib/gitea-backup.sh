@@ -21,7 +21,6 @@ if [[ "$SQLITE_RESULT" != "ok" ]]; then
      fail "Целостность SQLite базы Gitea нарушена"
 fi
 
-
 log "Целостность SQLite-базы Gitea подтверждена"
 
 
