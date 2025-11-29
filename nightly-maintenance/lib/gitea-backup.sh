@@ -36,12 +36,12 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
     # Проверяем: действительно-ли это директория?
     if [[ -d "$repo" ]]; then
 
-        log "Проверка репозитория ${repo}..."
+        log "Проверка репозитория $repo..."
 
         if  git -C "$repo" fsck --full --strict >> "$GITEA_LOG_FILE" 2>&1; then
-            log "Репозиторий ${repo} в порядке"
+            log "Репозиторий $repo в порядке"
         else
-            fail "Репозиторий ${repo} повреждён"
+            fail "Репозиторий $repo повреждён"
         fi
     fi
 done
