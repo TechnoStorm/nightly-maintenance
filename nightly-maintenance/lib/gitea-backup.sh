@@ -19,7 +19,7 @@ SQLITE_RESULT=$(sqlite3 "$GITEA_DB_FILE" "PRAGMA integrity_check;" 2>&1)
 
 if [[ "$SQLITE_RESULT" != "ok" ]]; then
 
-    # построчно выводим журнал ошибок $SQLITE_RESULT
+    # Построчно выводим журнал ошибок $SQLITE_RESULT
     while IFS=read -r line; do
          log "$line"
      done <<< "$SQLITE_RESULT"
@@ -37,10 +37,10 @@ log "Целостность SQLite-базы Gitea подтверждена"
 
 log "Проверка целостности репозиториев Gitea..."
 
-# по очереди проверяем целостность каждого репозитория пользователей
+# По очереди проверяем целостность каждого репозитория пользователей
 for repo in "$GITEA_GIT_DIR"/*/*; do
 
-    # проверяем: действительно-ли это директория?
+    # Проверяем: действительно-ли это директория?
     if [[ -d "$repo" ]]; then
 
         log "Проверка репозитория ${repo}..."
@@ -64,9 +64,9 @@ log "Создание дампа Gitea..."
 
 DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
 
-# делаем дамп gitea, игнорируя LFS-хранилище
-# логгируем весь вывод gitea dump, включая ошибки
-# запускаем НЕ от root, так как root отклоняется самой gitea
+# Делаем дамп gitea, игнорируя LFS-хранилище
+# Логгируем весь вывод gitea dump, включая ошибки
+# Запускаем НЕ от root, так как root отклоняется самой gitea
 if sudo -u gitea "$GITEA_BIN_FILE" dump \
     -c "$GITEA_CONFIG_FILE" \
     --skip-lfs-data \
@@ -91,7 +91,7 @@ if ! command -v rsync >/dev/null 2>&1; then
 fi
 
 
-# выполняем зеркалирование
+# Выполняем зеркалирование
 if rsync -aH --delete --stats \
     "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
