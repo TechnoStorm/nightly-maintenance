@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Файл конфигурации для nightly-maintenance.sh
 
-
 #########################
 # Параметры логгирования
 #########################
@@ -25,3 +24,10 @@ GITEA_LFS_DIR="/var/lib/gitea/lfs"
 GITEA_LFS_BACKUP_DIR="/var/hdd/git-lfs"
 GITEA_DUMP_DIR="/home/user/sync/gitea-backup"
 GITEA_DUMP_NAME="gitea-dump" # только имя (без расширения!), таймстамп добавится автоматом
+
+#########
+# Прочее
+#########
+
+# Точка монтирования HDD для резервных копий
+HDD_MOUNT_POINT="/var/hdd"
