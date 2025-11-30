@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# config.sh
 # Файл конфигурации для nightly-maintenance.sh
 
 
