@@ -12,14 +12,14 @@ BASE_DIR="$(dirname "$(readlink -f "$0")")"
 # Читаем конфиг
 source "$BASE_DIR/config.sh"
 
-# Подключаем функции
-source "$BASE_DIR/lib/functions.sh"
-
 # Принудительно создаём лог-директорию, чтобы логгировать все ошибки
 if ! mkdir -p "$LOG_DIR"; then
     echo "ERROR: Не удалось создать директорию: $LOG_DIR"
     exit 1
 fi
+
+# Подключаем функции
+source "$BASE_DIR/lib/functions.sh"
 
 
 ##############################################
