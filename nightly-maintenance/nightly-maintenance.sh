@@ -79,6 +79,11 @@ log "Запущен сценарий ночного техобслуживани
 command -v sqlite3 >/dev/null 2>&1     || fail "sqlite3 не установлен"
 command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
 
+# Проверяем: смонтирован-ли HDD?
+mountpoint -q "$HDD_MOUNT_POINT"       || fail "HDD не смонтирован на ${HDD_MOUNT_POINT}"
+
+[[ -x "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не является исполняемым: $GITEA_BIN_FILE"
+
 # Проверяем наличие необходимых директорий и файлов
 [[ -f "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
 [[ -f "$GITEA_CONFIG_FILE" ]]          || fail "Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
@@ -87,6 +92,10 @@ command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
 [[ -d "$GITEA_LFS_DIR" ]]              || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
 [[ -d "$GITEA_DUMP_DIR" ]]             || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
 [[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
+
+# Проверяем права на запись
+[[ -w "$GITEA_DUMP_DIR" ]] || fail "Нет прав на запись в $GITEA_DUMP_DIR"
+[[ -w "$GITEA_LFS_BACKUP_DIR" ]] || fail "Нет прав на запись в $GITEA_LFS_BACKUP_DIR"
 
 
 #############################
