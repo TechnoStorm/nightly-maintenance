@@ -66,7 +66,7 @@ source "$BASE_DIR/lib/gitea-backup.sh"
 
 log "Этап резервного копирования данных Gitea успешно завершён"
 
-# Перезапуска сервиса Gitea
+# Перезапуск сервиса Gitea
 source "$BASE_DIR/lib/gitea-start.sh"
 
 # Обновление Gitea
