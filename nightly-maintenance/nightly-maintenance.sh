@@ -117,7 +117,7 @@ while ! systemctl is-active --quiet gitea; do
     if (( timer >= MAX_WAIT )); then
         fail "Перезапуск сервиса Gitea не удался"
     fi
-fi
+done
 
 log "Сервис Gitea успешно запущен за ${timer} секунд"
 
