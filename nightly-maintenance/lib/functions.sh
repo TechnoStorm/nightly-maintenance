@@ -13,7 +13,7 @@ set -euo pipefail
 # Функция логгирования
 log() {
     local msg="[$(date '+%F %T')] $*"
-    echo "$msg" >> "$LOG_FILE"
+    echo "$msg" >> "$LOG_DIR/$LOG_FILE"
     echo "$msg"
 }
 
