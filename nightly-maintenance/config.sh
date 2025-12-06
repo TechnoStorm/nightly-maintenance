@@ -3,13 +3,14 @@
 # Файл конфигурации для nightly-maintenance.sh
 
 
+
 #########################
 # Параметры логгирования
 #########################
 
 # УКАЗЫВАТЬ КАТАЛОГИ БЕЗ КОНЕЧНОГО СЛЕША!
 LOG_DIR="/home/user/sync/gitea-backup"
-LOG_FILE="$LOG_DIR/nightly_maintenance.log"
+LOG_FILE="nightly_maintenance.log"
 MAX_LOG_LINES=200
 
 
