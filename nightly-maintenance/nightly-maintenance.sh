@@ -47,7 +47,7 @@ command -v rsync >/dev/null 2>&1                      || fail "rsync не уст
 [[ -d "$GITEA_GIT_DIR" ]]                             || fail "Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
 [[ -d "$GITEA_LFS_DIR" ]]                             || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
 [[ -d "$GITEA_DUMP_DIR" ]]                            || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
-[[ -d "$HDD_MOUNT_POINT"/"$GITEA_LFS_BACKUP_DIR" ]]   || fail "Директория зеркала LFS-хранилища не найдена: $HDD_MOUNT_POINT/$GITEA_LFS_BACKUP_DIR"
+[[ -d "$HDD_MOUNT_POINT/$GITEA_LFS_BACKUP_DIR" ]]   || fail "Директория зеркала LFS-хранилища не найдена: $HDD_MOUNT_POINT/$GITEA_LFS_BACKUP_DIR"
 
 
 #####################

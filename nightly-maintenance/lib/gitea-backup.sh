@@ -38,7 +38,7 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
 
         log "Проверка репозитория $repo..."
 
-        if  git -C "$repo" fsck --full --strict >> "$LOG_DIR"/"$GITEA_LOG_FILE" 2>&1; then
+        if  git -C "$repo" fsck --full --strict >> "$LOG_DIR"/"$LOG_FILE" 2>&1; then
             log "Репозиторий $repo в порядке"
         else
             fail "Репозиторий $repo повреждён"
@@ -63,8 +63,8 @@ DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
 if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump \
     -c "$GITEA_CONFIG_FILE" \
     --skip-lfs-data \
-    --file "$GITEA_DUMP_DIR"/"${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" \
-    >> "$LOG_DIR"/"$GITEA_LOG_FILE" 2>&1
+    --file "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" \
+    >> "$LOG_DIR/$LOG_FILE" 2>&1
 then
     log "Создание дампа Gitea успешно завершено"
 else
@@ -80,9 +80,9 @@ log "Зеркалирование LFS-хранилища..."
 
 # Выполняем зеркалирование
 if rsync -aH --delete --stats \
-    "$HDD_MOUNT_POINT"/"$GITEA_LFS_DIR"/ \
+    "$HDD_MOUNT_POINT/$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
-    >> "$LOG_DIR"/"$GITEA_LOG_FILE" 2>&1; then
+    >> "$LOG_DIR/$LOG_FILE" 2>&1; then
 
     log "Зеркалирование LFS-хранилища успешно завершено"
 else
