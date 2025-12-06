@@ -30,6 +30,34 @@ log "Целостность SQLite-базы Gitea подтверждена"
 
 log "Проверка целостности репозиториев Gitea..."
 
+all_repos_ok=true # флаг целостности всех репозиториев
+
+# Проверяем каждый репозиторий: структура $GITEA_GIT_DIR/<user>/<repo>
+for repo in "$GITEA_GIT_DIR"/*/*; do
+
+    # Чтобы убедиться что в директории действительно репозиторий,
+    # проверяем, что эта директория содержит поддиректорию ".git"
+    if [[ -d "$repo/.git" ]]; then
+
+        log "Проверка репозитория $repo..."
+
+        if  sudo -u "$GITEA_USER" git -C "$repo" fsck --full --strict >> "$LOG_DIR"/"$LOG_FILE" 2>&1; then
+            log "Репозиторий $repo в порядке"
+        else
+            log "ERROR: Репозиторий $repo повреждён"
+            all_repos_ok=false
+        fi
+    fi
+done
+
+# Итог проверки
+if [[ "$all_repos_ok" = true ]]; then
+    log "Проверка репозиториев Gitea успешно завершена"
+else
+    fail "Обнаружены повреждённые репозитории Gitea"
+fi
+
+
 # По очереди проверяем целостность каждого репозитория пользователей
 for repo in "$GITEA_GIT_DIR"/*/*; do
 
