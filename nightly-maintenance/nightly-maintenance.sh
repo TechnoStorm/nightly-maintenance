@@ -57,8 +57,11 @@ command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
 
 log "Остановка сервиса Gitea..."
 
+service_was_active=false # флаг начального стостояния сервиса
+
 # Если сервис запущен - останавливаем его
 if systemctl is-active --quiet gitea; then
+    service_was_active=true
     systemctl stop gitea
 fi
 
@@ -78,10 +81,10 @@ done
 
 
 # Если gitea была остановлена до выполнения скрипта, то сообщаем об этом
-if (( timer == 0 )); then
-    log "Сервис Gitea был уже остановлен"
-else
+if [[ "$service_was_active" = true ]]; then
     log "Сервис Gitea успешно остановлен за ${timer} секунд"
+else
+    log "Сервис Gitea был уже остановлен"
 fi
 
 
