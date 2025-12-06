@@ -54,71 +54,27 @@ command -v rsync >/dev/null 2>&1                      || fail "rsync не уст
 # Обслуживание Gitea
 #####################
 
-log "Остановка сервиса Gitea..."
+log "Начат этап обслуживания Gitea"
 
-service_was_active=false # флаг начального стостояния сервиса
+# Остановка сервиса Gitea
+source "$BASE_DIR/lib/gitea-stop.sh"
 
-# Если сервис запущен - останавливаем его
-if systemctl is-active --quiet gitea; then
-    service_was_active=true
-    systemctl stop gitea
-fi
+log "Начало резервного копирования Gitea..."
 
-
-# Проверка остановки сервиса
-MAX_WAIT=30 # максимальное время ожидания
-timer=0
-while systemctl is-active --quiet gitea; do
-    sleep 1
-    ((timer++))
-
-    # Проверяем: истекло-ли время ожидания?
-    if (( timer >= MAX_WAIT )); then
-        fail "Остановка сервиса Gitea не удалась"
-    fi
-done
-
-
-# Если gitea была остановлена до выполнения скрипта, то сообщаем об этом
-if [[ "$service_was_active" = true ]]; then
-    log "Сервис Gitea успешно остановлен за ${timer} секунд"
-else
-    log "Сервис Gitea был уже остановлен"
-fi
-
-
-#####################################
 # Резервное копирование данных Gitea
-#####################################
-
 source "$BASE_DIR/lib/gitea-backup.sh"
 
+log "Этап резервного копирования данных Gitea успешно завершён"
 
-###################
-# Перезапуск Gitea
-###################
+# Перезапуска сервиса Gitea
+source "$BASE_DIR/lib/gitea-start.sh"
 
-log "Перезапуск сервиса Gitea..."
+# Обновление Gitea
+# source "$BASE_DIR/lib/gitea-update.sh"
 
-# Проверка удачности запуска на уровне systemctl
-if ! systemctl start gitea; then
-    fail "systemctl не смог запустить сервис Gitea"
-fi
+log "Этап обслуживания Gitea успешно завершён"
 
 
-# Проверка удачности запуска на уровне сервиса
-timer=0
-while ! systemctl is-active --quiet gitea; do
-    sleep 1
-    ((timer++))
-
-    # Проверяем: истекло-ли время ожидания?
-    if (( timer >= MAX_WAIT )); then
-        fail "Перезапуск сервиса Gitea не удался"
-    fi
-done
-
-log "Сервис Gitea успешно запущен за ${timer} секунд"
 
 
 
