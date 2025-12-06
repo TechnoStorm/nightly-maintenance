@@ -21,6 +21,7 @@ MAX_LOG_LINES=200
 ##################
 
 # УКАЗЫВАТЬ КАТАЛОГИ БЕЗ КОНЕЧНОГО СЛЕША!
+GITEA_USER="gitea"
 GITEA_BIN_FILE="/usr/local/bin/gitea"
 GITEA_CONFIG_FILE="/etc/gitea/app.ini"
 GITEA_DB_FILE="/var/lib/gitea/gitea.db"
