@@ -27,6 +27,6 @@ GITEA_CONFIG_FILE="/etc/gitea/app.ini"
 GITEA_DB_FILE="/var/lib/gitea/gitea.db"
 GITEA_GIT_DIR="/srv/repos/git"
 GITEA_LFS_DIR="/srv/repos/lfs"
-GITEA_LFS_BACKUP_DIR="git-lfs"
+GITEA_LFS_BACKUP_DIR="/var/hdd/backup/git-lfs"
 GITEA_DUMP_DIR="/srv/sync/gitea-dumps"
 GITEA_DUMP_NAME="gitea-dump" # только имя (без расширения!), таймстамп добавится автоматом

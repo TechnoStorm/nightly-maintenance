@@ -89,7 +89,7 @@ log "Зеркалирование LFS-хранилища..."
 
 # Выполняем зеркалирование
 if rsync -aH --delete --stats \
-    "$HDD_MOUNT_POINT/$GITEA_LFS_DIR"/ \
+    "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
     >> "$LOG_DIR/$LOG_FILE" 2>&1; then
 

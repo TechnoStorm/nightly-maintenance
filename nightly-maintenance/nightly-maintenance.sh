@@ -34,20 +34,20 @@ log "Запущен сценарий ночного техобслуживани
 #####################
 
 # Проверяем: запущен-ли сценарий от root?
-(( EUID == 0 ))                                       || fail "Скрипт запущен не от root"
+(( EUID == 0 ))                        || fail "Скрипт запущен не от root"
 
 # Проверяем наличие необходимых утилит
-command -v sqlite3 >/dev/null 2>&1                    || fail "sqlite3 не установлен"
-command -v rsync >/dev/null 2>&1                      || fail "rsync не установлен"
+command -v sqlite3 >/dev/null 2>&1     || fail "sqlite3 не установлен"
+command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
 
 # Проверяем наличие необходимых директорий и файлов
-[[ -f "$GITEA_BIN_FILE" ]]                            || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
-[[ -f "$GITEA_CONFIG_FILE" ]]                         || fail "Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
-[[ -f "$GITEA_DB_FILE" ]]                             || fail "SQLite-база Gitea не найдена: $GITEA_DB_FILE"
-[[ -d "$GITEA_GIT_DIR" ]]                             || fail "Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
-[[ -d "$GITEA_LFS_DIR" ]]                             || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
-[[ -d "$GITEA_DUMP_DIR" ]]                            || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
-[[ -d "$HDD_MOUNT_POINT/$GITEA_LFS_BACKUP_DIR" ]]     || fail "Директория зеркала LFS-хранилища не найдена: $HDD_MOUNT_POINT/$GITEA_LFS_BACKUP_DIR"
+[[ -f "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
+[[ -f "$GITEA_CONFIG_FILE" ]]          || fail "Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
+[[ -f "$GITEA_DB_FILE" ]]              || fail "SQLite-база Gitea не найдена: $GITEA_DB_FILE"
+[[ -d "$GITEA_GIT_DIR" ]]              || fail "Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
+[[ -d "$GITEA_LFS_DIR" ]]              || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
+[[ -d "$GITEA_DUMP_DIR" ]]             || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
+[[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
 
 
 #####################
