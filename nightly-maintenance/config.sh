@@ -11,7 +11,7 @@ HDD_MOUNT_POINT="/var/hdd"
 #########################
 
 # УКАЗЫВАТЬ КАТАЛОГИ БЕЗ КОНЕЧНОГО СЛЕША!
-LOG_DIR="/home/user/sync/gitea-dumps"
+LOG_DIR="/srv/sync/gitea-dumps"
 LOG_FILE="nightly_maintenance.log"
 MAX_LOG_LINES=200
 
@@ -25,8 +25,8 @@ GITEA_USER="gitea"
 GITEA_BIN_FILE="/usr/local/bin/gitea"
 GITEA_CONFIG_FILE="/etc/gitea/app.ini"
 GITEA_DB_FILE="/var/lib/gitea/gitea.db"
-GITEA_GIT_DIR="/var/lib/gitea/git"
-GITEA_LFS_DIR="/var/lib/gitea/lfs"
+GITEA_GIT_DIR="/srv/repos/git"
+GITEA_LFS_DIR="/srv/repos/lfs"
 GITEA_LFS_BACKUP_DIR="git-lfs"
-GITEA_DUMP_DIR="/home/user/sync/gitea-dumps"
+GITEA_DUMP_DIR="/srv/sync/gitea-dumps"
 GITEA_DUMP_NAME="gitea-dump" # только имя (без расширения!), таймстамп добавится автоматом
