@@ -88,7 +88,7 @@ DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
 # Делаем дамп gitea, игнорируя LFS-хранилище
 # Логгируем весь вывод gitea dump, включая ошибки
 # Запускаем НЕ от root, так как root отклоняется самой gitea
-if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump \
+if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump -c "$GITEA_CONFIG_FILE" \
     -c "$GITEA_CONFIG_FILE" \
     --skip-lfs-data \
     --file "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" \
