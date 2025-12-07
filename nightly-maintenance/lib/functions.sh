@@ -28,7 +28,7 @@ fail() {
 
 # Функция обрезки лога (удаляются все строки, кроме последних $MAX_LOG_LINES)
 trim_log() {
-    if [[ -f "$LOG_FILE" ]]; then
+    if [[ -f "$LOG_DIR/$LOG_FILE" ]]; then
 
         # Создаём временный файл лога, с уникальным именем
         local tmp_file
