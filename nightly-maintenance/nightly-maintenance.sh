@@ -74,9 +74,8 @@ source "$BASE_DIR/lib/gitea-start.sh"
 
 log "Этап обслуживания Gitea успешно завершён"
 
-
-
-
+# Резервное копирование директорий Syncthing
+# source "$BASE_DIR/lib/sync-backup.sh"
 
 log "Сценарий ночного техобслуживания NAS успешно завершён"
 
