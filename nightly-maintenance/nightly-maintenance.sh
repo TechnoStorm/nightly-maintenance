@@ -36,6 +36,9 @@ log "Запущен сценарий ночного техобслуживани
 # Проверяем: запущен-ли сценарий от root?
 (( EUID == 0 ))                        || fail "Скрипт запущен не от root"
 
+# Проверяем: смонтирован-ли HDD на точку монтирования?
+mountpoint -q "$HDD_MOUNT_POINT"       || fail "$HDD_MOUNT_POINT не является точкой монтирования"
+
 # Проверяем наличие необходимых утилит
 command -v sqlite3 >/dev/null 2>&1     || fail "sqlite3 не установлен"
 command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
@@ -48,6 +51,7 @@ command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
 [[ -d "$GITEA_LFS_DIR" ]]              || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
 [[ -d "$GITEA_DUMP_DIR" ]]             || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
 [[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
+[[ -x "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не является исполняемым: $GITEA_BIN_FILE"
 
 
 #####################
