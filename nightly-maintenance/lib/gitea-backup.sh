@@ -24,29 +24,6 @@ fi
 log "Целостность SQLite-базы Gitea подтверждена"
 
 
-#######################
-# Создание дампа Gitea
-#######################
-
-log "Создание дампа Gitea..."
-
-DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
-
-# Делаем дамп gitea, игнорируя LFS-хранилище
-# Логгируем весь вывод gitea dump, включая ошибки
-# Запускаем НЕ от root, так как root отклоняется самой gitea
-if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump \
-    -c "$GITEA_CONFIG_FILE" \
-    --skip-lfs-data \
-    --file "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" \
-    >> "$LOG_DIR/$LOG_FILE" 2>&1
-then
-    log "Создание дампа Gitea успешно завершено"
-else
-    fail "Создание дампа Gitea не удалось"
-fi
-
-
 ##########################################
 # Проверка целостности репозиториев Gitea
 ##########################################
@@ -75,6 +52,29 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
         fi
     fi
 done
+
+
+#######################
+# Создание дампа Gitea
+#######################
+
+log "Создание дампа Gitea..."
+
+DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
+
+# Делаем дамп gitea, игнорируя LFS-хранилище
+# Логгируем весь вывод gitea dump, включая ошибки
+# Запускаем НЕ от root, так как root отклоняется самой gitea
+if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump \
+    -c "$GITEA_CONFIG_FILE" \
+    --skip-lfs-data \
+    --file "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" \
+    >> "$LOG_DIR/$LOG_FILE" 2>&1
+then
+    log "Создание дампа Gitea успешно завершено"
+else
+    fail "Создание дампа Gitea не удалось"
+fi
 
 
 # Итог проверки
