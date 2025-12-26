@@ -24,13 +24,17 @@ fi
 log "Целостность SQLite-базы Gitea не нарушена"
 
 
-log "Проверка внутренней согласованности базы данных Gitea..."
+##############################################
+# Проверка общей согласованности данных Gitea
+##############################################
 
-if ! sudo -u "$GITEA_USER" \
-    "$GITEA_BIN_FILE" doctor check \
-    -c "$GITEA_CONFIG_FILE"
-then
-    fail "База данных Gitea не согласована"
+log "Проверка общей согласованности данных Gitea..."
+
+output=$(sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" doctor check -c "$GITEA_CONFIG_FILE")
+echo "$output"
+
+if echo "$output" | grep -Eq "\[E\]|\[W\]"; then
+    fail "docktor check вернул ошибки или предупреждения (перезапустить скрипт вручную и проверить вывод в терминал)"
 fi
 
 log "Проверка общей согласованности данных Gitea завершена"
