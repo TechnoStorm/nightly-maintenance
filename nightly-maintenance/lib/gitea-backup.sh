@@ -81,7 +81,6 @@ if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump \
     -c "$GITEA_CONFIG_FILE" \
     --skip-lfs-data \
     --file "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" \
-    >> "$LOG_DIR/$LOG_FILE" 2>&1
 then
     log "Создание дампа Gitea успешно завершено"
 else
