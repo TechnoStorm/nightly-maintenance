@@ -30,9 +30,11 @@ log "Целостность SQLite-базы Gitea не нарушена"
 
 log "Проверка общей согласованности данных Gitea..."
 
+# Выполняем docktor check, сохраняя его вывод
 output=$(sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" doctor check -c "$GITEA_CONFIG_FILE")
 echo "$output"
 
+# Парсим вывод docktor check на наличие ошибок и предупреждений
 if echo "$output" | grep -Eq "\[E\]|\[W\]"; then
     fail "docktor check вернул ошибки или предупреждения (перезапустить скрипт вручную и проверить вывод в терминал)"
 fi
