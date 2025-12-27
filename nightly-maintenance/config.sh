@@ -3,7 +3,7 @@
 # Файл конфигурации для nightly-maintenance.sh
 
 
-HDD_MOUNT_POINT="/var/hdd"
+HDD_MOUNT_POINT="/var/hdd" # точка монтирования HDD для бэкапов
 
 
 #########################
@@ -26,9 +26,9 @@ GITEA_USER="gitea"
 GITEA_BIN_FILE="/usr/local/bin/gitea"
 GITEA_CONFIG_FILE="/etc/gitea/app.ini"
 GITEA_DB_FILE="/var/lib/gitea/gitea.db"
-GITEA_GIT_DIR="/srv/repos/git"
-GITEA_LFS_DIR="/srv/repos/lfs"
-GITEA_LFS_BACKUP_DIR="/var/hdd/backup/git-lfs"
-GITEA_DUMP_DIR="/srv/sync/gitea-dumps"
+GITEA_GIT_DIR="/srv/repos/git" # исходные репозитории
+GITEA_LFS_DIR="/srv/repos/lfs" # исходное LFS-хранилище
+GITEA_LFS_BACKUP_DIR="/var/hdd/backup/git-lfs" # директория резервной копии LFS-хранилища
+GITEA_BIN_BACKUP_DIR="/srv/sync/gitea-backup" # директория хранения предыдущей версии бинарника Gitea
+GITEA_DUMP_DIR="/srv/sync/gitea-backup"
 GITEA_DUMP_NAME="gitea-dump" # только имя (без расширения!), таймстамп добавится автоматом
-GITEA_BIN_BACKUP_DIR="/srv/sync/gitea-dumps"
