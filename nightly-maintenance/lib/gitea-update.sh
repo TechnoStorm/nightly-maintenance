@@ -41,7 +41,12 @@ GITEA_LATEST_VERSION=$(
     '
 )
 
-# Проверка наличия результата парсинга
+# Проверяем наличие результата парсинга
 [[ -n "$GITEA_LATEST_VERSION" ]] || fail "Парсинг JSON-файла вернул пустое значение"
 
-echo "$GITEA_LATEST_VERSION"
+# Сверяем версии
+if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
+
+    log "Обновление не требуется"
+    return 0
+fi
