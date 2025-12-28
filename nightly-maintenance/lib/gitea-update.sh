@@ -50,3 +50,20 @@ if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
     log "Обновление не требуется"
     return 0
 fi
+
+
+###########################
+# Процесс обновления Gitea
+###########################
+
+# Формируем имена файлов и ссылки
+GITEA_NEW_BIN_FILE="gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
+GITEA_BIN_URL="https://github.com/go-gitea/gitea/releases/download/v1.25.3/gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
+GITEA_SHA256_URL="$GITEA_BIN_URL.sha256"
+
+
+log "Загрузка актуальной версии бинарного файла и sha256..."
+
+# Загружаем бинарник и контрольную сумму
+curl -fsSL "$GITEA_BIN_URL" -o "$TMP_DIR/$GITEA_NEW_BIN_FILE"
+curl -fsSL "$GITEA_SHA256_URL" -o "$TMP_DIR/$GITEA_NEW_BIN_FILE.sha256"
