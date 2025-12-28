@@ -18,6 +18,9 @@ if ! mkdir -p "$LOG_DIR"; then
     exit 1
 fi
 
+# Создаём временную директорию
+TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX)
+
 # Подключаем функции
 source "$BASE_DIR/lib/functions.sh"
 
@@ -84,5 +87,9 @@ log "Этап обслуживания Gitea успешно завершён"
 
 log "Сценарий ночного техобслуживания NAS успешно завершён"
 
-# Напоследок, обрезаем лог
+
+# Обрезаем лог
 trim_log
+
+# Принудительно удаляем $DIR_TEMP даже в случае прерывания скрипта
+trap 'rm -rf "$TMP_DIR"' EXIT

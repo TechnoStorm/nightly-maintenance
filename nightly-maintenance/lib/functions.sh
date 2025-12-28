@@ -32,7 +32,7 @@ trim_log() {
 
         # Создаём временный файл лога, с уникальным именем
         local tmp_file
-        tmp_file=$(mktemp "$LOG_DIR/${LOG_FILE}.tmp.XXXXXX") || fail "Не удалось создать временный log-файл для обрезки лога"
+        tmp_file=$(mktemp "$TMP_DIR/${LOG_FILE}.tmp.XXXXXX") || fail "Не удалось создать временный log-файл для обрезки лога"
 
         # Сохраняем последние $MAX_LOG_LINES строк
         if tail -n "$MAX_LOG_LINES" "$LOG_DIR/$LOG_FILE" > "$tmp_file"; then
