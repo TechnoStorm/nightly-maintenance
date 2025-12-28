@@ -7,7 +7,7 @@
 # Проверка целостности базы данных Gitea
 #########################################
 
-log "Начата проверка целостности SQLite-базы Gitea..."
+log "Проверка целостности SQLite-базы Gitea..."
 
 SQLITE_RESULT=$(sqlite3 "$GITEA_DB_FILE" "PRAGMA integrity_check;" 2>&1)
 
