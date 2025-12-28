@@ -21,7 +21,7 @@ MAX_LOG_LINES=5000
 ##################
 
 # УКАЗЫВАТЬ КАТАЛОГИ БЕЗ КОНЕЧНОГО СЛЕША!
-GITEA_SYSTEM="linux-amd64"
+GITEA_SYSTEM="linux-arm64"
 GITEA_USER="gitea"
 GITEA_BIN_FILE="/usr/local/bin/gitea"
 GITEA_CONFIG_FILE="/etc/gitea/app.ini"
