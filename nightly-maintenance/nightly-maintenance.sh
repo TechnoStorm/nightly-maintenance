@@ -72,15 +72,22 @@ log "Начало резервного копирования Gitea..."
 # Резервное копирование данных Gitea
 source "$BASE_DIR/lib/gitea-backup.sh"
 
-log "Этап резервного копирования данных Gitea успешно завершён"
+log "Резервное копирование данных Gitea успешно завершено"
+
+# Проверяем, что сегодня понедельник
+if [[ "$(date +%u)" -eq 1 ]]; then
+
+    log "Начало обновления Gitea..."
+    #Запускаем процесс обновления Gitea
+    source="$BASE_DIR/lib/gitea-update.sh"
+fi
+
 
 # Перезапуск сервиса Gitea
 source "$BASE_DIR/lib/gitea-start.sh"
 
-# Обновление Gitea
-# source "$BASE_DIR/lib/gitea-update.sh"
-
 log "Этап обслуживания Gitea успешно завершён"
+
 
 # Резервное копирование директорий Syncthing
 # source "$BASE_DIR/lib/sync-backup.sh"
