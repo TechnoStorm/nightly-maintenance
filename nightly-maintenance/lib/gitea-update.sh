@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #gitea-update.sh
-# Скрипт ообновления Gitea
+# Скрипт обновления Gitea
 
 # Принудительно прерываем скрипт при ошибках, и неинициализированных переменных
 set -euo pipefail
@@ -12,8 +12,6 @@ set -euo pipefail
 
 log "Проверка наличия обновлений Gitea..."
 
-log "Определение текущей версии Gitea..."
-
 # Узнаём версию текущего бинарника Gitea
 GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
 
@@ -24,9 +22,7 @@ else
 fi
 
 
-log "Проверка наличия обновлений Gitea..."
-
-log "Получение JSON-файла latest-версии Gitea..."
+log "Получение JSON-файла latest-версии Gitea с Github..."
 
 JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
 
@@ -49,6 +45,8 @@ if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
 
     log "Обновление не требуется"
     return 0
+else
+    log "Доступная новая версия Gitea: $GITEA_LATEST_VERSION"
 fi
 
 
@@ -58,7 +56,7 @@ fi
 
 # Формируем имена файлов и ссылки
 GITEA_NEW_BIN_FILE="gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
-GITEA_BIN_URL="https://github.com/go-gitea/gitea/releases/download/v1.25.3/gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
+GITEA_BIN_URL="https://github.com/go-gitea/gitea/releases/download/$GITEA_LATEST_VERSION/gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
 GITEA_SHA256_URL="$GITEA_BIN_URL.sha256"
 
 
