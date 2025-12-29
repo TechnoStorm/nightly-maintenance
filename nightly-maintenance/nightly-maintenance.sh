@@ -21,6 +21,9 @@ fi
 # Создаём временную директорию
 TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX)
 
+# Принудительно удаляем $DIR_TEMP даже в случае прерывания скрипта
+trap 'rm -rf "$TMP_DIR"' EXIT
+
 # Подключаем функции
 source "$BASE_DIR/lib/functions.sh"
 
@@ -97,6 +100,3 @@ log "Сценарий ночного техобслуживания NAS успе
 
 # Обрезаем лог
 trim_log
-
-# Принудительно удаляем $DIR_TEMP даже в случае прерывания скрипта
-trap 'rm -rf "$TMP_DIR"' EXIT
