@@ -22,7 +22,7 @@ else
 fi
 
 
-log "Получение JSON-файла latest-версии Gitea с Github..."
+log "Получение JSON-файла latest-версии Gitea с GitHub..."
 
 JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
 
@@ -50,18 +50,30 @@ else
 fi
 
 
-###########################
-# Процесс обновления Gitea
-###########################
+#########################################
+# Загрузка свежего бинарного файла Gitea
+#########################################
 
 # Формируем имена файлов и ссылки
 GITEA_NEW_BIN_FILE="gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
-GITEA_BIN_URL="https://github.com/go-gitea/gitea/releases/download/$GITEA_LATEST_VERSION/gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
+GITEA_BIN_URL="https://github.com/go-gitea/gitea/releases/download/v$GITEA_LATEST_VERSION/gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
 GITEA_SHA256_URL="$GITEA_BIN_URL.sha256"
 
+log "Загрузка свежего бинарного файла..."
+curl -fsSL "$GITEA_BIN_URL" -o "$GITEA_NEW_BIN_FILE"
 
-log "Загрузка актуальной версии бинарного файла и sha256..."
+log "Загрузка контрольной суммы для бинарного файла..."
+curl -fsSL "$GITEA_SHA256_URL" -o "$GITEA_NEW_BIN_FILE.sha256"
 
-# Загружаем бинарник и контрольную сумму
-curl -fsSL "$GITEA_BIN_URL" -o "$TMP_DIR/$GITEA_NEW_BIN_FILE"
-curl -fsSL "$GITEA_SHA256_URL" -o "$TMP_DIR/$GITEA_NEW_BIN_FILE.sha256"
+log "Загрузка файлов успешно завершена"
+
+
+#############################
+# Проверка контрольной суммы
+#############################
+
+log "Проверка контрольной суммы $GITEA_NEW_BIN_FILE..."
+
+sha256sum -c "$(basename "$GITEA_SHA256_URL")" || fail "Неудачная проверка контрольной суммы $GITEA_NEW_BIN_FILE"
+
+log "Провекра контрольной суммы успешно завершена"
