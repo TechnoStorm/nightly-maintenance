@@ -71,6 +71,13 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
     fi
 done
 
+# Итог проверки
+if [[ $all_repos_ok = true ]]; then
+    log "Проверка репозиториев Gitea успешно завершена"
+else
+    fail "Обнаружены повреждённые репозитории Gitea"
+fi
+
 log "Проверка репозиториев Gitea завершена"
 
 
@@ -93,14 +100,6 @@ then
     log "Создание дампа Gitea успешно завершено"
 else
     fail "Создание дампа Gitea не удалось"
-fi
-
-
-# Итог проверки
-if [[ $all_repos_ok = true ]]; then
-    log "Проверка репозиториев Gitea успешно завершена"
-else
-    fail "Обнаружены повреждённые репозитории Gitea"
 fi
 
 
