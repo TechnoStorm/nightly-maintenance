@@ -32,18 +32,15 @@ trim_log() {
 
         # Создаём временный файл лога, с уникальным именем
         local tmp_file
-        tmp_file=$(mktemp "$TMP_DIR/${LOG_FILE}.tmp.XXXXXX") || fail "Не удалось создать временный log-файл для обрезки лога"
+        tmp_file=$(mktemp "${LOG_FILE}.tmp.XXXXXX") || fail "Не удалось создать временный log-файл для обрезки лога"
 
-        # Сохраняем последние $MAX_LOG_LINES строк
+        # Сохраняем последние $MAX_LOG_LINES строк во временный файл
         if tail -n "$MAX_LOG_LINES" "$LOG_DIR/$LOG_FILE" > "$tmp_file"; then
 
             # Заменяем старый лог-файл на новый
             mv -f "$tmp_file" "$LOG_DIR/$LOG_FILE" || fail "При обрезке лога не удалось заменить старый лог-файл обновлённым"
         else
-            rm -f "$tmp_file"
-            log "ERROR: Обрезка лога не удалась"
-
-            # Не прерываем скрипт через "fail()", так-как функция всё равно выполняется в самом конце
+            fail "Обрезка лога не удалась"
         fi
     fi
 }
