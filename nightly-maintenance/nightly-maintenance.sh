@@ -80,8 +80,9 @@ log "Резервное копирование данных Gitea успешно
 if [[ "$(date +%u)" -eq 1 ]]; then
 
     log "Начало обновления Gitea..."
+
     #Запускаем процесс обновления Gitea
-    source="$BASE_DIR/lib/gitea-update.sh"
+    source "$BASE_DIR/lib/gitea-update.sh"
 fi
 
 
