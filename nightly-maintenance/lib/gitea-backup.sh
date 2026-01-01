@@ -39,7 +39,7 @@ if echo "$output" | grep -Eq "\[E\]|\[W\]"; then
     fail "docktor check вернул ошибки или предупреждения (перезапустить скрипт вручную и проверить вывод в терминал)"
 fi
 
-log "Проверка общей согласованности данных Gitea завершена"
+log "Проверка общей согласованности данных Gitea успешно завершена"
 
 
 ##########################################
@@ -90,11 +90,12 @@ log "Создание дампа Gitea..."
 DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
 
 # Делаем дамп gitea, игнорируя LFS-хранилище
-# Логгируем весь вывод gitea dump, включая ошибки
+# Логгируем только ошибки ошибки
 # Запускаем НЕ от root, так как root отклоняется самой gitea
 if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump \
     -c "$GITEA_CONFIG_FILE" \
     --skip-lfs-data \
+    --quiet \
     --file "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip"
 then
     log "Создание дампа Gitea успешно завершено"
