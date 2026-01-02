@@ -46,7 +46,7 @@ if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
     return 0
 fi
 
-log "Доступная новая версия Gitea: $GITEA_LATEST_VERSION"
+log "Доступно обновление Gitea: $GITEA_CURRENT_VERSION -> $GITEA_LATEST_VERSION"
 
 
 #########################################
@@ -71,7 +71,7 @@ log "Загрузка файлов успешно завершена"
 # Проверка контрольной суммы
 #############################
 
-log "Проверка контрольной суммы $GITEA_NEW_BIN_FILE..."
+log "Проверка контрольной суммы для $GITEA_NEW_BIN_FILE..."
 
 sha256sum -c "$(basename "$GITEA_SHA256_URL")" >/dev/null \
     || fail "Неудачная проверка контрольной суммы $GITEA_NEW_BIN_FILE"
