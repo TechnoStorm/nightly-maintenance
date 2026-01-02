@@ -76,4 +76,38 @@ log "Проверка контрольной суммы $GITEA_NEW_BIN_FILE..."
 
 sha256sum -c "$(basename "$GITEA_SHA256_URL")" || fail "Неудачная проверка контрольной суммы $GITEA_NEW_BIN_FILE"
 
-log "Провекра контрольной суммы успешно завершена"
+log "Проверка контрольной суммы успешно завершена"
+
+
+#######################
+# Обновление бинарника
+#######################
+
+# Переименовываем бинарник в "gitea"
+mv "gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM" gitea || \
+    fail "Не удалось переименовать бинарный файл gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM в \"gitea\""
+
+# Определяем рабочий каталог бинарника Gitea
+GITEA_DIR=$(dirname "$GITEA_BIN_FILE")
+
+# Коируем свежую версию бинарника из $TMP_DIR в рабочую директорию
+mv -f "$TMP_DIR/gitea" "$GITEA_DIR" || fail "Не удалось установить свежий бинарный файл в рабочую директорию"
+
+# Делаем бинарник исполняемым
+chmod +x $GITEA_BIN_FILE || fail "Не удалось сделать бинарный файл исполняемым"
+
+log "Свежий бинарный файл успешно установлен в рабочую директорию"
+
+# Перепроверяем версию обновлённого бинарника:
+
+GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
+
+if [[ -z "$GITEA_CURRENT_VERSION" ]]; then
+    fail "\"gitea --version\" вернула пустой результат"
+fi
+
+if [[ "$GITEA_CURRENT_VERSION" != "$GITEA_LATEST_VERSION" ]]; then
+    fail "Версия обновлённого бинарного файла Gitea ($GITEA_CURRENT_VERSION) не соответствует актуальной ($GITEA_LATEST_VERSION)"
+fi
+
+log "Обновление Gitea до версии $GITEA_LATEST_VERSION успешно завершено"
