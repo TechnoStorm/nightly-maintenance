@@ -15,12 +15,9 @@ log "Проверка наличия обновлений Gitea..."
 # Узнаём версию текущего бинарника Gitea
 GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
 
-if [[ -n "$GITEA_CURRENT_VERSION" ]]; then
-    log "Текущая версия Gitea: $GITEA_CURRENT_VERSION"
-else
-    fail "\"gitea --version\" вернула пустой результат"
-fi
+[[ -n "$GITEA_CURRENT_VERSION" ]] || fail "\"gitea --version\" вернула пустой результат"
 
+log "Текущая версия Gitea: $GITEA_CURRENT_VERSION"
 
 log "Получение JSON-файла latest-версии Gitea с GitHub..."
 
@@ -45,9 +42,9 @@ if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
 
     log "Обновление не требуется"
     return 0
-else
-    log "Доступная новая версия Gitea: $GITEA_LATEST_VERSION"
 fi
+
+log "Доступная новая версия Gitea: $GITEA_LATEST_VERSION"
 
 
 #########################################
@@ -95,6 +92,7 @@ mv -f "$TMP_DIR/gitea" "$GITEA_DIR" || fail "Не удалось установ�
 
 # Делаем бинарник исполняемым
 chmod +x $GITEA_BIN_FILE || fail "Не удалось сделать бинарный файл исполняемым"
+chmod +x "$GITEA_BIN_FILE" || fail "Не удалось сделать бинарный файл исполняемым"
 
 log "Свежий бинарный файл успешно установлен в рабочую директорию"
 
@@ -102,12 +100,9 @@ log "Свежий бинарный файл успешно установлен 
 
 GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
 
-if [[ -z "$GITEA_CURRENT_VERSION" ]]; then
-    fail "\"gitea --version\" вернула пустой результат"
-fi
+[[ -n "$GITEA_CURRENT_VERSION" ]] || fail "\"gitea --version\" вернула пустой результат"
 
-if [[ "$GITEA_CURRENT_VERSION" != "$GITEA_LATEST_VERSION" ]]; then
+[[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]] || \
     fail "Версия обновлённого бинарного файла Gitea ($GITEA_CURRENT_VERSION) не соответствует актуальной ($GITEA_LATEST_VERSION)"
-fi
 
 log "Обновление Gitea до версии $GITEA_LATEST_VERSION успешно завершено"
