@@ -17,8 +17,6 @@ GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
 
 [[ -n "$GITEA_CURRENT_VERSION" ]] || fail "\"gitea --version\" вернула пустой результат"
 
-log "Текущая версия Gitea: $GITEA_CURRENT_VERSION"
-
 log "Получение содержимого JSON-файла последней версии Gitea с GitHub..."
 
 JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
@@ -84,8 +82,8 @@ log "Проверка контрольной суммы успешно заве�
 #######################
 
 # Переименовываем бинарник в "gitea"
-mv "gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM" gitea || \
-    fail "Не удалось переименовать бинарный файл gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM в \"gitea\""
+mv "$GITEA_NEW_BIN_FILE" gitea || \
+    fail "Не удалось переименовать бинарный файл gitea-$GITEA_NEW_BIN_FILE в \"gitea\""
 
 # Определяем рабочий каталог бинарника Gitea
 GITEA_DIR=$(dirname "$GITEA_BIN_FILE")
