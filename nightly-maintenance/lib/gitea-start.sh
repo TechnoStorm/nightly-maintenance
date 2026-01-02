@@ -13,22 +13,16 @@ set -euo pipefail
 log "Перезапуск сервиса Gitea..."
 
 # Проверка удачности запуска на уровне systemctl
-if ! systemctl start gitea; then
-    fail "systemctl не смог запустить сервис Gitea"
+systemctl start gitea || fail "systemctl не смог запустить сервис Gitea"
+
+# Выжидаем 10 секунд
+sleep 10
+
+# Проверка HTTP-ответа сервиса Gitea
+if ! curl -sf --max-time 3 http://127.0.0.1:3000 >/dev/null; then
+    fail "Не удалось получить HTTP-ответ Gitea через 10 секунд."
+else
+    log "Получен HTTP-ответ Gitea"
 fi
 
-
-# Проверка удачности запуска на уровне сервиса
-MAX_WAIT=30 # максимальное время ожидания
-timer=0
-while ! systemctl is-active --quiet gitea; do
-    sleep 1
-    ((timer++))
-
-    # Проверяем: истекло-ли время ожидания?
-    if (( timer >= MAX_WAIT )); then
-        fail "Перезапуск сервиса Gitea не удался"
-    fi
-done
-
-log "Сервис Gitea успешно запущен за ${timer} секунд"
+log "Сервис Gitea успешно запущен"
