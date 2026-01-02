@@ -26,7 +26,7 @@ MAX_WAIT=30 # максимальное время ожидания
 timer=0
 while systemctl is-active --quiet gitea; do
     sleep 1
-    ((timer++))
+    ((timer++)) || true # обязательно возвращаем true, во избежание краша
 
     # Проверяем: истекло-ли время ожидания?
     if (( timer >= MAX_WAIT )); then
