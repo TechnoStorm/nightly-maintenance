@@ -19,12 +19,10 @@ GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
 
 log "Текущая версия Gitea: $GITEA_CURRENT_VERSION"
 
-log "Получение JSON-файла latest-версии Gitea с GitHub..."
 log "Получение содержимого JSON-файла последней версии Gitea с GitHub..."
 
 JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
 
-log "Парсинг JSON-файла..."
 [[ -n "$JSON" ]] || fail "Не удалось получить содержимое JSON-файла"
 
 log "Парсинг содержимого JSON-файла..."
@@ -39,7 +37,6 @@ GITEA_LATEST_VERSION=$(
 )
 
 # Проверяем наличие результата парсинга
-[[ -n "$GITEA_LATEST_VERSION" ]] || fail "Парсинг JSON-файла вернул пустое значение"
 [[ -n "$GITEA_LATEST_VERSION" ]] || fail "Парсинг содержимого JSON-файла вернул пустое значение"
 
 # Сверяем версии
@@ -76,7 +73,6 @@ log "Загрузка файлов успешно завершена"
 
 log "Проверка контрольной суммы $GITEA_NEW_BIN_FILE..."
 
-sha256sum -c "$(basename "$GITEA_SHA256_URL")" || fail "Неудачная проверка контрольной суммы $GITEA_NEW_BIN_FILE"
 sha256sum -c "$(basename "$GITEA_SHA256_URL")" >/dev/null \
     || fail "Неудачная проверка контрольной суммы $GITEA_NEW_BIN_FILE"
 
@@ -98,7 +94,6 @@ GITEA_DIR=$(dirname "$GITEA_BIN_FILE")
 mv -f "$TMP_DIR/gitea" "$GITEA_DIR" || fail "Не удалось установить свежий бинарный файл в рабочую директорию"
 
 # Делаем бинарник исполняемым
-chmod +x $GITEA_BIN_FILE || fail "Не удалось сделать бинарный файл исполняемым"
 chmod +x "$GITEA_BIN_FILE" || fail "Не удалось сделать бинарный файл исполняемым"
 
 log "Свежий бинарный файл успешно установлен в рабочую директорию"
