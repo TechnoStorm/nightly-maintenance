@@ -15,10 +15,10 @@ if [[ "$SQLITE_RESULT" != "ok" ]]; then
 
     # Построчно выводим журнал ошибок $SQLITE_RESULT
     while IFS=read -r line; do
-         log "$line"
-     done <<< "$SQLITE_RESULT"
+        log "$line"
+    done <<< "$SQLITE_RESULT"
 
-     fail "SQLite-база данных Gitea нарушена"
+    fail "SQLite-база данных Gitea нарушена"
 fi
 
 log "Целостность SQLite-базы Gitea не нарушена"
