@@ -19,10 +19,8 @@ systemctl start gitea || fail "systemctl не смог запустить сер
 sleep 10
 
 # Проверка HTTP-ответа сервиса Gitea
-if ! curl -sf --max-time 3 http://127.0.0.1:3000 >/dev/null; then
-    fail "Не удалось получить HTTP-ответ Gitea через 10 секунд."
+if curl -sf --max-time 3 http://127.0.0.1:3000 >/dev/null; then
+    log "Сервис Gitea успешно запущен"
 else
-    log "Получен HTTP-ответ Gitea"
+    fail "Не удалось получить HTTP-ответ Gitea через 10 секунд."
 fi
-
-log "Сервис Gitea успешно запущен"
