@@ -77,6 +77,8 @@ log "Загрузка файлов успешно завершена"
 log "Проверка контрольной суммы $GITEA_NEW_BIN_FILE..."
 
 sha256sum -c "$(basename "$GITEA_SHA256_URL")" || fail "Неудачная проверка контрольной суммы $GITEA_NEW_BIN_FILE"
+sha256sum -c "$(basename "$GITEA_SHA256_URL")" >/dev/null \
+    || fail "Неудачная проверка контрольной суммы $GITEA_NEW_BIN_FILE"
 
 log "Проверка контрольной суммы успешно завершена"
 
