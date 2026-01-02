@@ -20,10 +20,14 @@ GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
 log "Текущая версия Gitea: $GITEA_CURRENT_VERSION"
 
 log "Получение JSON-файла latest-версии Gitea с GitHub..."
+log "Получение содержимого JSON-файла последней версии Gitea с GitHub..."
 
 JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
 
 log "Парсинг JSON-файла..."
+[[ -n "$JSON" ]] || fail "Не удалось получить содержимое JSON-файла"
+
+log "Парсинг содержимого JSON-файла..."
 
 # Парсим тег версии и проверяем формат "x.x.x"
 GITEA_LATEST_VERSION=$(
@@ -36,6 +40,7 @@ GITEA_LATEST_VERSION=$(
 
 # Проверяем наличие результата парсинга
 [[ -n "$GITEA_LATEST_VERSION" ]] || fail "Парсинг JSON-файла вернул пустое значение"
+[[ -n "$GITEA_LATEST_VERSION" ]] || fail "Парсинг содержимого JSON-файла вернул пустое значение"
 
 # Сверяем версии
 if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
