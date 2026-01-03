@@ -10,14 +10,12 @@ set -euo pipefail
 # Остановка сервиса Gitea
 ##########################
 
-log "Остановка сервиса Gitea..."
-
-service_was_active=false # флаг начального стостояния сервиса
-
 # Если сервис запущен - останавливаем его
 if systemctl is-active --quiet gitea; then
-    service_was_active=true
+    log "Остановка сервиса Gitea..."
     systemctl stop gitea
+else
+    return 0
 fi
 
 
@@ -35,10 +33,4 @@ while systemctl is-active --quiet gitea; do
     fi
 done
 
-
-# Если gitea была остановлена до выполнения скрипта, то сообщаем об этом
-if [[ "$service_was_active" = true ]]; then
-    log "Сервис Gitea успешно остановлен за ${timer} секунд"
-else
-    log "Сервис Gitea был уже остановлен"
-fi
+log "Сервис Gitea успешно остановлен за ${timer} секунд"
