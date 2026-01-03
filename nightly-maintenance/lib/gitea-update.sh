@@ -13,9 +13,13 @@ set -euo pipefail
 log "Проверка наличия обновлений Gitea..."
 
 # Узнаём версию текущего бинарника Gitea
-GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
+GITEA_CURRENT_VERSION="$(
+    "$GITEA_BIN_FILE" --version |
+    grep -oE 'gitea version [0-9]+\.[0-9]+\.[0-9]+' |
+    awk '{print $3}'
+)"
 
-[[ -n "$GITEA_CURRENT_VERSION" ]] || fail "\"gitea --version\" вернула пустой результат"
+[[ -n "$GITEA_CURRENT_VERSION" ]] || fail "Не удалось определить версию Gitea"
 
 log "Получение содержимого JSON-файла последней версии Gitea с GitHub..."
 
@@ -99,10 +103,14 @@ chmod +x "$GITEA_BIN_FILE" ||
 log "Свежий бинарный файл успешно установлен в рабочую директорию"
 
 # Перепроверяем версию обновлённого бинарника
-GITEA_CURRENT_VERSION="$("$GITEA_BIN_FILE" --version | awk '{print $3}')"
+GITEA_CURRENT_VERSION="$(
+    "$GITEA_BIN_FILE" --version |
+    grep -oE 'gitea version [0-9]+\.[0-9]+\.[0-9]+' |
+    awk '{print $3}'
+)"
 
 [[ -n "$GITEA_CURRENT_VERSION" ]] ||
-    fail "\"gitea --version\" вернула пустой результат"
+    fail "Не удалось определить версию обновлённого бинарного файла Gitea"
 
 [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]] ||
     fail "Версия обновлённого бинарного файла Gitea ($GITEA_CURRENT_VERSION) не соответствует актуальной ($GITEA_LATEST_VERSION)"
