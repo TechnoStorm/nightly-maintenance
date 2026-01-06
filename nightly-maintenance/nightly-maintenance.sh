@@ -60,6 +60,9 @@ command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
 command -v jq >/dev/null 2>&1          || fail "jq не установлен"
 command -v curl >/dev/null 2>&1        || fail "curl не установлен"
 
+# Проверяем наличие пользователя Gitea
+id "$GITEA_USER" &>/dev/null           || fail "Пользователь Gitea не существует"
+
 # Проверяем наличие необходимых директорий и файлов
 [[ -f "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
 [[ -x "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не является исполняемым: $GITEA_BIN_FILE"
