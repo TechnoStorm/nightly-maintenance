@@ -25,7 +25,7 @@ log "Получение JSON последней версии Gitea"
 
 JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
 
-echo "$JSON" | jq -e 'length > 0' >/dev/null ||
+echo "$JSON" | jq -e 'length > 0' >/dev/null 2>&1 ||
     fail "GitHub API вернул пустой или некорректный JSON"
 
 log "Парсинг JSON"
@@ -40,7 +40,7 @@ GITEA_LATEST_VERSION=$(
 )
 
 # Проверяем наличие результата парсинга
-[[ -n "$GITEA_LATEST_VERSION" ]] || fail "Парсинг содержимого JSON-файла вернул пустое значение"
+[[ -n "$GITEA_LATEST_VERSION" ]] || fail "JSON-парсер вернул пустое значение"
 
 # Сверяем версии
 if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
