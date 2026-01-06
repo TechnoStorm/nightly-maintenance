@@ -44,7 +44,6 @@ GITEA_LATEST_VERSION=$(
 
 # Сверяем версии
 if [[ "$GITEA_CURRENT_VERSION" == "$GITEA_LATEST_VERSION" ]]; then
-
     log "Обновление не требуется"
     return 0
 fi
