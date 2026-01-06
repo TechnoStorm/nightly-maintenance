@@ -100,7 +100,7 @@ mv "$GITEA_NEW_BIN_FILE" gitea ||
 GITEA_DIR=$(dirname "$GITEA_BIN_FILE")
 
 # Коируем свежую версию бинарника из $TMP_DIR в рабочую директорию
-cp -f "gitea" "$GITEA_BIN_FILE" ||
+mv -f "gitea" "$GITEA_BIN_FILE" ||
     fail "Не удалось установить свежий бинарный файл в рабочую директорию"
 
 # Делаем бинарник исполняемым
