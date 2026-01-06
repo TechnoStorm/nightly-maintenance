@@ -109,6 +109,14 @@ else
     fail "Создание дампа Gitea не удалось"
 fi
 
+# Переназначаем владельца и группу созданного дамп-файла
+chown "$GITEA_DUMP_CHOWN" "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" ||
+    fail "Не удалось изменить владельца и группу для $GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip"
+
+# Переназначаем права созданного дамп-файла
+chmod "$GITEA_DUMP_CHMOD" "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip"
+    fail "Не удалось изменить права доступа для $GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip"
+
 
 ###############################
 # Зеркалирование LFS-хранилища

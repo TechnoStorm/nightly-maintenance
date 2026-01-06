@@ -15,7 +15,7 @@ LOG_DIR="/srv/sync/gitea-backup"
 LOG_FILE="nightly_maintenance.log"
 MAX_LOG_LINES=5000
 LOG_CHOWN="user:user"
-LOG_CHMOD=640
+LOG_CHMOD="640"
 
 
 ##################
@@ -33,3 +33,5 @@ GITEA_LFS_DIR="/srv/repos/lfs" # исходное LFS-хранилище
 GITEA_LFS_BACKUP_DIR="/var/hdd/backup/git-lfs" # директория резервной копии LFS-хранилища
 GITEA_DUMP_DIR="/srv/sync/gitea-backup"
 GITEA_DUMP_NAME="gitea-dump" # только имя (без расширения!), таймстамп добавится автоматом
+GITEA_DUMP_CHOWN="user:gitea"
+GITEA_DUMP_CHMOD="660"
