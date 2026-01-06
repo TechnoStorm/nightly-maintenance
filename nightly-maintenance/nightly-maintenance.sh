@@ -49,6 +49,8 @@ mountpoint -q "$HDD_MOUNT_POINT"       || fail "$HDD_MOUNT_POINT не являе
 # Проверяем наличие необходимых утилит
 command -v sqlite3 >/dev/null 2>&1     || fail "sqlite3 не установлен"
 command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
+command -v jq >/dev/null 2>&1          || fail "jq не установлен"
+command -v curl >/dev/null 2>&1        || fail "curl не установлен"
 
 # Проверяем наличие необходимых директорий и файлов
 [[ -f "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
