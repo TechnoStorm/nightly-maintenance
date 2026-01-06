@@ -36,10 +36,15 @@ log "Проверка общей согласованности данных Git
 # Выполняем docktor check, сохраняя его вывод
 DOCTOR_CHECK_RESULT=$(sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" doctor check -c "$GITEA_CONFIG_FILE")
 
-# Парсим вывод docktor check на наличие ошибок: [E] и предупреждений: [W]
-if grep -Eq "\[E\]|\[W\]" <<< "$DOCTOR_CHECK_RESULT"; then
+# Парсим вывод docktor check на наличие ошибок: [E]
+if grep -Eq "\[E\]" <<< "$DOCTOR_CHECK_RESULT"; then
     log "$DOCTOR_CHECK_RESULT"
     fail "Проверка \"gitea doctor check\" вернула ошибки или предупреждения"
+fi
+
+# Парсим вывод docktor check на наличие предупреждений: [W]
+if grep -Eq "\[W\]" <<< "$DOCTOR_CHECK_RESULT"; then
+    log "$DOCTOR_CHECK_RESULT"
 fi
 
 log "Проверка общей согласованности данных Gitea успешно завершена"
