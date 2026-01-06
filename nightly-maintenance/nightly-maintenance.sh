@@ -14,6 +14,9 @@ BASE_DIR="$(dirname "$(readlink -f "$0")")"
 # Читаем конфиг
 source "$BASE_DIR/config.sh"
 
+# Подключаем функции
+source "$BASE_DIR/lib/functions.sh"
+
 # Принудительно создаём лог-директорию, чтобы логгировать все ошибки
 if ! mkdir -p "$LOG_DIR"; then
     echo "ERROR: Не удалось создать директорию: $LOG_DIR"
@@ -28,9 +31,6 @@ cd "$TMP_DIR"
 
 # Принудительно удаляем $DIR_TEMP даже в случае прерывания скрипта
 trap 'rm -rf "$TMP_DIR"' EXIT
-
-# Подключаем функции
-source "$BASE_DIR/lib/functions.sh"
 
 
 ##############################################
