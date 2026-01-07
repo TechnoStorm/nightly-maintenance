@@ -26,6 +26,14 @@ fail() {
 }
 
 
+# Создаём временную директорию
+TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX 2>/dev/null) ||
+    fail "Неудалось создать временную директорию"
+
+# Меняем текущую директорию на $TMP_DIR
+cd "$TMP_DIR" || fail "Не удалось сменить директорию на TMP_DIR".
+
+
 # Функция обрезки лога (удаляются все строки, кроме последних $MAX_LOG_LINES)
 trim_log() {
     if [[ -f "$LOG_DIR/$LOG_FILE" ]]; then
