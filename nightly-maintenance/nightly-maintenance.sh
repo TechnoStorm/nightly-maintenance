@@ -27,16 +27,6 @@ if ! mkdir -p "$LOG_DIR"; then
     exit 1
 fi
 
-# Переназначаем владельца и права лог-файла
-chown "$LOG_CHOWN" "$LOG_DIR/$LOG_FILE" || fail "Не удалось переназначить владельца и группу лог-файла"
-chmod "$LOG_CHMOD" "$LOG_DIR/$LOG_FILE" || fail "Не удалось переназначить права доступа лог-файла"
-
-# Создаём временную директорию
-TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX 2>/dev/null) ||
-    fail "Неудалось создать временную директорию"
-
-cd "$TMP_DIR" || fail "Не удалось сменить рабочую директорию на TMP_DIR".
-
 # Принудительно удаляем $DIR_TEMP даже в случае прерывания скрипта
 trap 'rm -rf "$TMP_DIR"' EXIT
 

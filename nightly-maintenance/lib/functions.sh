@@ -34,6 +34,10 @@ trim_log() {
         local tmp_file
         tmp_file=$(mktemp "$LOG_DIR/${LOG_FILE}.tmp.XXXXXX") || fail "Не удалось создать временный log-файл для обрезки лога"
 
+        # Переназначаем владельца и права лог-файла
+        chown "$LOG_CHOWN" "$tmp_file" || fail "Не удалось переназначить владельца и группу временного лог-файла"
+        chmod "$LOG_CHMOD" "$tmp_file" || fail "Не удалось переназначить права доступа временного лог-файла"
+
         # Сохраняем последние $MAX_LOG_LINES строк во временный файл
         if tail -n "$MAX_LOG_LINES" "$LOG_DIR/$LOG_FILE" > "$tmp_file"; then
 
