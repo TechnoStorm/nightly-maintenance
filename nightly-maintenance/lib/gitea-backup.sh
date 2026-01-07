@@ -128,7 +128,7 @@ log "Зеркалирование LFS-хранилища:"
 if rsync -aH --delete --stats \
     "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
-    >> "$LOG_DIR/$LOG_FILE" 2>&1; then
+    >> "$LOG_FILE" 2>&1; then
 
     log "Зеркалирование LFS-хранилища успешно завершено"
 else
