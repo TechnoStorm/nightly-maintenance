@@ -69,7 +69,7 @@ for repo in "$GITEA_GIT_DIR"/*/*; do
             log "Проверка репозитория: $repo"
 
             # Проверяем целостность текущего репозитория
-            if sudo -u "$GITEA_USER" git -C "$repo" fsck --full --strict >> "$LOG_DIR/$LOG_FILE" 2>&1; then
+            if sudo -u "$GITEA_USER" git -C "$repo" fsck --full --strict >> "$LOG_FILE" 2>&1; then
                 log "Репозиторий $repo в порядке"
             else
                 log "ERROR: Репозиторий $repo повреждён"
