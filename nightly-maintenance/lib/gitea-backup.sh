@@ -58,7 +58,13 @@ log "Проверка целостности репозиториев Gitea..."
 
 all_repos_ok=true # флаг целостности всех репозиториев
 
-for repo in "$GITEA_GIT_DIR"/*/*; do
+# Получаем массив путей всех репозиториев (если они есть)
+shopt -s nullglob
+repos=("$GITEA_GIT_DIR"/*/*)
+shopt -u nullglob
+
+# Запускаем цикл проверки
+for repo in "${repos[@]}"; do
 
     # Если это директория, то...
     if [[ -d "$repo" ]]; then
