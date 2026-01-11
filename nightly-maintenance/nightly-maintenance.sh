@@ -58,6 +58,9 @@ log "Запущен сценарий ночного техобслуживани
 # Проверяем: смонтирован-ли HDD на точку монтирования?
 mountpoint -q "$HDD_MOUNT_POINT"       || fail "$HDD_MOUNT_POINT не является точкой монтирования"
 
+# С помощью файла-маркера проверяем: точно-ли смонтирован правильный диск?
+[[ -f "$HDD_MOUNT_POINT"/nas-hdd-marker ]]    || fail "Файл-маркер (\"nas-hdd-marker\") отсутствует на $HDD_MOUNT_POINT"
+
 # Проверяем наличие необходимых утилит
 command -v sqlite3 >/dev/null 2>&1     || fail "sqlite3 не установлен"
 command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
