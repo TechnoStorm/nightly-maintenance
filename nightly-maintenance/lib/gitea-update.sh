@@ -21,14 +21,14 @@ GITEA_CURRENT_VERSION="$(
 
 [[ -n "$GITEA_CURRENT_VERSION" ]] || fail "Не удалось определить версию Gitea"
 
-log "Получение JSON последней версии Gitea"
+log "Получение JSON последней версии Gitea..."
 
 JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
 
 jq -e 'length > 0' <<< "$JSON" >/dev/null 2>&1 ||
     fail "GitHub API вернул пустой или некорректный JSON"
 
-log "Парсинг JSON"
+log "Парсинг JSON..."
 
 # Парсим тег версии и проверяем формат "x.x.x"
 GITEA_LATEST_VERSION=$(
