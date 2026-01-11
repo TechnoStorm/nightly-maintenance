@@ -77,7 +77,7 @@ if (( ${#repos[@]} > 0 )); then
                 log "Проверка репозитория: $repo"
 
                 # Проверяем целостность текущего репозитория
-                if sudo -u "$GITEA_USER" git -C "$repo" fsck --full --strict >> "$LOG_FILE" 2>&1; then
+                if sudo -u "$GITEA_USER" git -C "$repo" fsck --full >> "$LOG_FILE" 2>&1; then
                     log "Репозиторий $repo в порядке"
                 else
                     log "[ERROR]: Репозиторий $repo повреждён"
@@ -136,7 +136,6 @@ chmod "$GITEA_DUMP_CHMOD" "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.
 log "Зеркалирование LFS-хранилища..."
 
 # Выполняем зеркалирование
-if -u "$GITEA_USER" rsync -aH --delete --numeric-ids --stats \
     "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
