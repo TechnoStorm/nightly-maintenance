@@ -54,42 +54,47 @@ log "Проверка общей согласованности данных Git
 # Проверка целостности репозиториев Gitea
 ##########################################
 
-log "Проверка целостности репозиториев Gitea..."
-
-all_repos_ok=true # флаг целостности всех репозиториев
-
 # Получаем массив путей всех репозиториев (если они есть)
 shopt -s nullglob
 repos=("$GITEA_GIT_DIR"/*/*)
 shopt -u nullglob
 
-# Запускаем цикл проверки
-for repo in "${repos[@]}"; do
+log "Проверка целостности репозиториев Gitea..."
 
-    # Если это директория, то...
-    if [[ -d "$repo" ]]; then
+if (( ${#repos[@]} > 0 )); then
 
-        # ...проверяем, что это bare-репозиторий
-        if sudo -u "$GITEA_USER" git -C "$repo" rev-parse --is-bare-repository &>/dev/null; then
+    all_repos_ok=true # флаг целостности всех репозиториев
 
-            log "Проверка репозитория: $repo"
+    # Запускаем цикл проверки
+    for repo in "${repos[@]}"; do
 
-            # Проверяем целостность текущего репозитория
-            if sudo -u "$GITEA_USER" git -C "$repo" fsck --full --strict >> "$LOG_FILE" 2>&1; then
-                log "Репозиторий $repo в порядке"
-            else
-                log "ERROR: Репозиторий $repo повреждён"
-                all_repos_ok=false
+        # Если это директория, то...
+        if [[ -d "$repo" ]]; then
+
+            # ...проверяем, что это bare-репозиторий
+            if sudo -u "$GITEA_USER" git -C "$repo" rev-parse --is-bare-repository &>/dev/null; then
+
+                log "Проверка репозитория: $repo"
+
+                # Проверяем целостность текущего репозитория
+                if sudo -u "$GITEA_USER" git -C "$repo" fsck --full --strict >> "$LOG_FILE" 2>&1; then
+                    log "Репозиторий $repo в порядке"
+                else
+                    log "[ERROR]: Репозиторий $repo повреждён"
+                    all_repos_ok=false
+                fi
             fi
         fi
-    fi
-done
+    done
 
-# Итог проверки
-if [[ $all_repos_ok = true ]]; then
-    log "Проверка репозиториев Gitea успешно завершена"
+    # Итог проверки
+    if [[ $all_repos_ok = true ]]; then
+        log "Проверка репозиториев Gitea успешно завершена"
+    else
+        fail "Обнаружены повреждённые репозитории Gitea"
+    fi
 else
-    fail "Обнаружены повреждённые репозитории Gitea"
+    log "Репозитории не обнаружены"
 fi
 
 
@@ -128,10 +133,10 @@ chmod "$GITEA_DUMP_CHMOD" "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.
 # Зеркалирование LFS-хранилища
 ###############################
 
-log "Зеркалирование LFS-хранилища:"
+log "Зеркалирование LFS-хранилища..."
 
 # Выполняем зеркалирование
-if rsync -aH --delete --stats \
+if -u "$GITEA_USER" rsync -aH --delete --numeric-ids --stats \
     "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
