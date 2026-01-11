@@ -154,6 +154,7 @@ fi
 log "Зеркалирование LFS-хранилища..."
 
 # Выполняем зеркалирование
+if sudo -u "$GITEA_USER" rsync -aH --delete --numeric-ids --stats \
     "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
