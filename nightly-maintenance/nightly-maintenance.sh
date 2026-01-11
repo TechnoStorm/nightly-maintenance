@@ -53,32 +53,32 @@ echo "" >> "$LOG_FILE" # пустая строка, для разделения 
 log "Запущен сценарий ночного техобслуживания NAS"
 
 # Проверяем: запущен-ли сценарий от root?
-(( EUID == 0 ))                        || fail "Скрипт запущен не от root"
+(( EUID == 0 ))                               || fail "Скрипт запущен не от root"
 
 # Проверяем: смонтирован-ли HDD на точку монтирования?
-mountpoint -q "$HDD_MOUNT_POINT"       || fail "$HDD_MOUNT_POINT не является точкой монтирования"
+mountpoint -q "$HDD_MOUNT_POINT"              || fail "$HDD_MOUNT_POINT не является точкой монтирования"
 
 # С помощью файла-маркера проверяем: точно-ли смонтирован правильный диск?
 [[ -f "$HDD_MOUNT_POINT"/nas-hdd-marker ]]    || fail "Файл-маркер (\"nas-hdd-marker\") отсутствует на $HDD_MOUNT_POINT"
 
 # Проверяем наличие необходимых утилит
-command -v sqlite3 >/dev/null 2>&1     || fail "sqlite3 не установлен"
-command -v rsync >/dev/null 2>&1       || fail "rsync не установлен"
-command -v jq >/dev/null 2>&1          || fail "jq не установлен"
-command -v curl >/dev/null 2>&1        || fail "curl не установлен"
+command -v sqlite3 >/dev/null 2>&1            || fail "sqlite3 не установлен"
+command -v rsync >/dev/null 2>&1              || fail "rsync не установлен"
+command -v jq >/dev/null 2>&1                 || fail "jq не установлен"
+command -v curl >/dev/null 2>&1               || fail "curl не установлен"
 
 # Проверяем наличие пользователя Gitea
-id "$GITEA_USER" &>/dev/null           || fail "Пользователь Gitea не существует"
+id "$GITEA_USER" &>/dev/null                  || fail "Пользователь Gitea не существует"
 
 # Проверяем наличие необходимых директорий и файлов
-[[ -f "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
-[[ -x "$GITEA_BIN_FILE" ]]             || fail "Бинарный файл Gitea не является исполняемым: $GITEA_BIN_FILE"
-[[ -f "$GITEA_CONFIG_FILE" ]]          || fail "Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
-[[ -f "$GITEA_DB_FILE" ]]              || fail "SQLite-база Gitea не найдена: $GITEA_DB_FILE"
-[[ -d "$GITEA_GIT_DIR" ]]              || fail "Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
-[[ -d "$GITEA_LFS_DIR" ]]              || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
-[[ -d "$GITEA_DUMP_DIR" ]]             || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
-[[ -d "$GITEA_LFS_BACKUP_DIR" ]]       || fail "Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
+[[ -f "$GITEA_BIN_FILE" ]]                    || fail "Бинарный файл Gitea не найден: $GITEA_BIN_FILE"
+[[ -x "$GITEA_BIN_FILE" ]]                    || fail "Бинарный файл Gitea не является исполняемым: $GITEA_BIN_FILE"
+[[ -f "$GITEA_CONFIG_FILE" ]]                 || fail "Конфигурационный файл Gitea не найден: $GITEA_CONFIG_FILE"
+[[ -f "$GITEA_DB_FILE" ]]                     || fail "SQLite-база Gitea не найдена: $GITEA_DB_FILE"
+[[ -d "$GITEA_GIT_DIR" ]]                     || fail "Директория Git-репозиториев не найдена: $GITEA_GIT_DIR"
+[[ -d "$GITEA_LFS_DIR" ]]                     || fail "Директория LFS-хранилища не найдена: $GITEA_LFS_DIR"
+[[ -d "$GITEA_DUMP_DIR" ]]                    || fail "Директория для дампов Gitea не найдена: $GITEA_DUMP_DIR"
+[[ -d "$GITEA_LFS_BACKUP_DIR" ]]              || fail "Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
 
 
 #####################
