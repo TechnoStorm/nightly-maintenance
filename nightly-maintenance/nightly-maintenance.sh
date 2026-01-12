@@ -35,7 +35,7 @@ TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX 2>/dev/null) ||
     fail "Неудалось создать временную директорию"
 
 # Меняем текущую директорию на $TMP_DIR
-cd "$TMP_DIR" || fail "Не удалось сменить директорию на TMP_DIR".
+cd "$TMP_DIR" || fail "Не удалось сменить директорию на TMP_DIR"
 
 # Работаем с lock-файлом
 exec 200>"$BASE_DIR/lock" || fail "Не удалось открыть lock-файл для чтения"
