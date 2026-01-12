@@ -23,7 +23,13 @@ GITEA_CURRENT_VERSION="$(
 
 log "Получение JSON последней версии Gitea..."
 
-JSON=$(curl -fsSL "https://api.github.com/repos/go-gitea/gitea/releases/latest")
+JSON=$(curl -fsSL \
+    --retry 3 \
+    --retry-delay 10 \
+    -H "User-Agent: nightly-maintenance-script" \
+    "https://api.github.com/repos/go-gitea/gitea/releases/latest") ||
+    fail "GitHub API недоступен"
+
 
 jq -e 'length > 0' <<< "$JSON" >/dev/null 2>&1 ||
     fail "GitHub API вернул пустой или некорректный JSON"
