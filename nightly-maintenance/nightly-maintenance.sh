@@ -112,7 +112,6 @@ if [[ "$(date +%u)" -eq 1 ]]; then
     source "$BASE_DIR/lib/gitea-update.sh"
 fi
 
-
 # Перезапуск сервиса Gitea
 source "$BASE_DIR/lib/gitea-start.sh"
 
