@@ -55,17 +55,17 @@ log "Запущен сценарий ночного техобслуживани
 # Проверяем: запущен-ли сценарий от root?
 (( EUID == 0 ))                               || fail "Скрипт запущен не от root"
 
-# Проверяем: смонтирован-ли HDD на точку монтирования?
-mountpoint -q "$HDD_MOUNT_POINT"              || fail "$HDD_MOUNT_POINT не является точкой монтирования"
-
-# С помощью файла-маркера проверяем: точно-ли смонтирован правильный диск?
-[[ -f "$HDD_MOUNT_POINT"/nas-hdd-marker ]]    || fail "Файл-маркер (\"nas-hdd-marker\") отсутствует на $HDD_MOUNT_POINT"
-
 # Проверяем наличие необходимых утилит
 command -v sqlite3 >/dev/null 2>&1            || fail "sqlite3 не установлен"
 command -v rsync >/dev/null 2>&1              || fail "rsync не установлен"
 command -v jq >/dev/null 2>&1                 || fail "jq не установлен"
 command -v curl >/dev/null 2>&1               || fail "curl не установлен"
+
+# Проверяем: смонтирован-ли HDD на точку монтирования?
+mountpoint -q "$HDD_MOUNT_POINT"              || fail "$HDD_MOUNT_POINT не является точкой монтирования"
+
+# С помощью файла-маркера проверяем: точно-ли смонтирован правильный диск?
+[[ -f "$HDD_MOUNT_POINT"/nas-hdd-marker ]]    || fail "Файл-маркер (\"nas-hdd-marker\") отсутствует на $HDD_MOUNT_POINT"
 
 # Проверяем наличие пользователя Gitea
 id "$GITEA_USER" &>/dev/null                  || fail "Пользователь Gitea не существует"
