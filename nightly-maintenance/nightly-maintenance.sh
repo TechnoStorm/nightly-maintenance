@@ -119,9 +119,11 @@ log "Этап обслуживания Gitea успешно завершён"
 
 
 # Вычисляем прошедшее время
-minutes=$((SECONDS / 60))
+hours=$((SECONDS / 3600))
+minutes=$(((SECONDS % 3600) / 60))
 seconds=$((SECONDS % 60))
-log "Сценарий ночного техобслуживания NAS успешно завершён за $minutes:$seconds секунд"
+
+log "Сценарий ночного техобслуживания NAS успешно завершён ($(printf '%02d:%02d:%02d' $hours $minutes $seconds))"
 
 
 # Обрезаем лог
