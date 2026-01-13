@@ -18,9 +18,22 @@ systemctl start gitea || fail "systemctl не смог запустить сер
 # Выжидаем 10 секунд
 sleep 10
 
-# Проверка HTTP-ответа сервиса Gitea
-if curl -sf --max-time 3 http://127.0.0.1:3000 >/dev/null; then
-    log "Сервис Gitea успешно запущен"
-else
-    fail "Не удалось получить HTTP-ответ Gitea через 10 секунд."
-fi
+
+###############################################
+# Проверка удачности перезапуска сервиса Gitea
+###############################################
+
+MAX_WAIT=30 # максимальное время ожидания
+timer=0
+
+# Проверка HTTP-ответа от Gitea
+while ! curl -sf http://127.0.0.1:3000 >/dev/null; do
+
+    sleep 1
+    ((timer++)) || true
+    if (( timer >= MAX_WAIT )); then
+        fail "Сервис Gitea не ответил в течение $MAX_WAIT секунд"
+    fi
+done
+
+log "Сервис Gitea успешно запущен ($timer сек.)"
