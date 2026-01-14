@@ -108,8 +108,24 @@ log "Резервное копирование данных Gitea успешно
 
 # Проверяем, что сегодня понедельник
 if [[ "$(date +%u)" -eq 1 ]]; then
-    #Запускаем процесс обновления Gitea
-    source "$BASE_DIR/lib/gitea-update.sh"
+
+    log "Проверка доступности GitHub API..."
+
+    # Проверка доступности Github Api
+    if curl -fsS \
+        --connect-timeout 5 \
+        --max-time 10 \
+        -H "User-Agent: nightly-maintenance-script" \
+        "https://api.github.com/rate_limit" \
+        2>/dev/null; then
+
+        # Запускаем процесс обновления Gitea
+        source "$BASE_DIR/lib/gitea-update.sh"
+    else
+        # Получаем код ошибки
+        CURL_CODE=$?
+        log "[WARNING]: GitHub API недоступен, этап обновления Gitea пропущен (curl code: $CURL_CODE)"
+    fi
 fi
 
 # Перезапуск сервиса Gitea
