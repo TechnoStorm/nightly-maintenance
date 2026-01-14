@@ -122,7 +122,7 @@ if [[ "$(date +%u)" -eq 1 ]]; then
         --max-time 10 \
         -H "User-Agent: nightly-maintenance-script" \
         "https://api.github.com/rate_limit" \
-        2>/dev/null; then
+        >/dev/null 2>&1; then
 
         # Запускаем процесс обновления Gitea
         source "$BASE_DIR/lib/gitea-update.sh"
