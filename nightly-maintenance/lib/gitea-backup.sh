@@ -136,7 +136,7 @@ chmod "$GITEA_DUMP_CHMOD" "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.
 log "Зеркалирование Git-репозиториев..."
 
 # Выполняем зеркалирование
-if sudo rsync -aH --delete --numeric-ids --stats \
+if rsync -aH --delete --numeric-ids --stats \
     "$GITEA_GIT_DIR"/ \
     "$GITEA_GIT_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
@@ -155,7 +155,7 @@ fi
 log "Зеркалирование LFS-хранилища..."
 
 # Выполняем зеркалирование
-if sudo rsync -aH --delete --numeric-ids --stats \
+if rsync -aH --delete --numeric-ids --stats \
     "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
