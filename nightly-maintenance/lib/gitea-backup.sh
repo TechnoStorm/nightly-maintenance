@@ -141,6 +141,7 @@ if sudo rsync -aH --delete --numeric-ids --stats \
     "$GITEA_GIT_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
 
+    echo "" >> "$LOG_FILE" # отступ
     log "Зеркалирование Git-репозиториев успешно завершено"
 else
     fail "Ошибка выполнения зеркалирования средствами rsync"
@@ -159,6 +160,7 @@ if sudo rsync -aH --delete --numeric-ids --stats \
     "$GITEA_LFS_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
 
+    echo "" >> "$LOG_FILE" # отступ
     log "Зеркалирование LFS-хранилища успешно завершено"
 else
     fail "Ошибка выполнения зеркалирования средствами rsync"
