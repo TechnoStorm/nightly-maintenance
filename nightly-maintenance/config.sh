@@ -11,7 +11,7 @@ HDD_MOUNT_POINT="/srv/hdd" # точка монтирования HDD для бэ
 #########################
 
 # УКАЗЫВАТЬ КАТАЛОГИ БЕЗ КОНЕЧНОГО СЛЕША!
-LOG_FILE="/srv/sync/gitea-backup/nightly_maintenance.log"
+LOG_FILE="/srv/sync/gitea-backup/nightly-maintenance.log"
 MAX_LOG_LINES=5000
 LOG_CHOWN="user:user"
 LOG_CHMOD="640"
