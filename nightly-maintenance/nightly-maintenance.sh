@@ -17,16 +17,14 @@ source "$BASE_DIR/config.sh"
 # Подключаем функции
 source "$BASE_DIR/lib/functions.sh"
 
-# Создаём в лог-файле строки-разделители
-echo "" >> "$LOG_FILE" # отступ
-echo "=============== $(date '+%F %T') ===============" >> "$LOG_FILE"
-echo "" >> "$LOG_FILE" # отступ
-
-log "Запущен сценарий ночного техобслуживания NAS"
-
-
 # Принудительно создаём лог-файл, если он ещё не создан
 if [[ ! -f "$LOG_FILE" ]]; then
+
+    # Проверяем наличие директории
+    if [[ ! -d "$(dirname "$LOG_FILE")" ]]; then
+        echo "[ERROR]: Директория лог-файла отсутствует"
+        exit 1
+    fi
 
     # Создаём лог-файл
     if ! touch "$LOG_FILE"; then
@@ -37,6 +35,13 @@ if [[ ! -f "$LOG_FILE" ]]; then
     chown "$LOG_CHOWN" "$LOG_FILE" || fail "Не удалось переназначить владельца и группулог-файла"
     chmod "$LOG_CHMOD" "$LOG_FILE" || fail "Не удалось переназначить права доступа лог-файла"
 fi
+
+# Создаём в лог-файле строки-разделители
+echo "" >> "$LOG_FILE" # отступ
+echo "=============== $(date '+%F %T') ===============" >> "$LOG_FILE"
+echo "" >> "$LOG_FILE" # отступ
+
+log "Запущен сценарий ночного техобслуживания NAS"
 
 # Создаём временную директорию
 TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX 2>/dev/null) ||
