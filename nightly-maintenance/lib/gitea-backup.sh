@@ -128,6 +128,9 @@ chown "$GITEA_DUMP_CHOWN" "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.
 chmod "$GITEA_DUMP_CHMOD" "$GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip" ||
     fail "Не удалось изменить права доступа для $GITEA_DUMP_DIR/${GITEA_DUMP_NAME}_${DUMP_TIMESTAMP}.zip"
 
+# Выполняем ротацию дампов
+dump_rotate
+
 
 ##################################
 # Зеркалирование Git-репозиториев
