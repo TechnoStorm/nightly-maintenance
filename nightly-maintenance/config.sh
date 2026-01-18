@@ -44,3 +44,4 @@ GITEA_DUMP_DIR="/srv/sync/gitea-backup" # директория для дампо
 GITEA_DUMP_NAME="gitea-dump" # только имя (без расширения!), таймстамп добавится автоматом
 GITEA_DUMP_CHOWN="user:user"
 GITEA_DUMP_CHMOD="660"
+GITEA_MAX_DUMPS="60"

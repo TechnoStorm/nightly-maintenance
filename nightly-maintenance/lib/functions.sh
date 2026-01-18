@@ -25,6 +25,43 @@ fail() {
     exit 1
 }
 
+# Функция ротации дамп-файлов
+dump_rotate() {
+
+    log "Ротация дампов..."
+
+    # Формируем массив имён дампов
+    mapfile -t dumps < <(
+        find "$GITEA_DUMP_DIR" \
+            -maxdepth 1 \
+            -type f \
+            -name 'gitea-dump_*' \
+            -printf '%f\n' \
+        | sort
+    )
+
+     # Получаем количество найденных файлов
+    local dump_count="${#dumps[@]}"
+
+    # Вычисляем, сколько дампов нужно удалить
+    local remove_count=$(( dump_count - GITEA_MAX_DUMPS ))
+
+    # Проверяем, что количество дампов не нулевое
+    # Проверяем, что выражение "dump_count - GITEA_MAX_DUMPS" не стало отрицательным
+    if (( dump_count == 0 || remove_count <=0 )); then
+        log "Ротация дампов не требуется"
+        return 0
+    fi
+
+    # Удаляем старые дампы
+    for (( i=0; i<remove_count; i++ )); do
+        local dump_to_remove="$GITEA_DUMP_DIR/${dumps[i]}"
+        rm -f -- "$dump_to_remove" || fail "Не удалось удалить: $dump_to_remove"
+        log "Удалён дамп: $dump_to_remove"
+    done
+
+    log "Ротация дампов успешно завершена"
+}
 
 # Функция ротации лога (удаляются все строки, кроме последних $MAX_LOG_LINES)
 log_rotate() {
