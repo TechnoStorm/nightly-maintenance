@@ -32,7 +32,7 @@ if [[ ! -f "$LOG_FILE" ]]; then
     exit 1
     fi
 
-    chown "$LOG_CHOWN" "$LOG_FILE" || fail "Не удалось переназначить владельца и группулог-файла"
+    chown "$LOG_CHOWN" "$LOG_FILE" || fail "Не удалось переназначить владельца и группу лог-файла"
     chmod "$LOG_CHMOD" "$LOG_FILE" || fail "Не удалось переназначить права доступа лог-файла"
 fi
 
