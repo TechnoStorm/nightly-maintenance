@@ -17,6 +17,10 @@ source "$BASE_DIR/config.sh"
 # Подключаем функции
 source "$BASE_DIR/lib/functions.sh"
 
+# Работаем с lock-файлом
+exec 200>"$BASE_DIR/lock" || fail "Не удалось открыть lock-файл для чтения"
+flock -n 200 || fail "Предыдущий сценарий ночного техобслуживания NAS не завершил выполнение"
+
 # Принудительно создаём лог-файл, если он ещё не создан
 if [[ ! -f "$LOG_FILE" ]]; then
 
@@ -49,10 +53,6 @@ TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX 2>/dev/null) ||
 
 # Меняем текущую директорию на $TMP_DIR
 cd "$TMP_DIR" || fail "Не удалось сменить директорию на TMP_DIR"
-
-# Работаем с lock-файлом
-exec 200>"$BASE_DIR/lock" || fail "Не удалось открыть lock-файл для чтения"
-flock -n 200 || fail "Предыдущий сценарий ночного техобслуживания NAS не завершил выполнение"
 
 # Принудительно удаляем $DIR_TEMP даже в случае прерывания скрипта
 trap 'rm -rf "$TMP_DIR"' EXIT
