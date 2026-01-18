@@ -10,19 +10,18 @@ set -euo pipefail
 # Остановка сервиса Gitea
 ##########################
 
-# Если сервис запущен - останавливаем его
-if systemctl is-active --quiet gitea; then
-    log "Остановка сервиса Gitea..."
-    systemctl stop gitea
-else
-    return 0
-fi
+log "Остановка сервиса Gitea..."
 
+# Засекаем время остановки Gitea
+gitea_stop_timer=$SECONDS
 
-# Проверка остановки сервиса
+# Останавливаем Gitea, без блокировки выполнения скрипта (что бы цикл таймаута работал)
+systemctl stop --no-block gitea
+
 MAX_WAIT=30 # максимальное время ожидания
 timer=0
 
+# Проверка остановки сервиса
 while systemctl is-active --quiet gitea; do
     sleep 1
     ((timer++)) || true # обязательно возвращаем true, во избежание краша
@@ -33,4 +32,7 @@ while systemctl is-active --quiet gitea; do
     fi
 done
 
-log "Сервис Gitea успешно остановлен ($timer sec.)"
+# Вычисляем прошедшее время
+gitea_stop_timer=$(( SECONDS - gitea_stop_timer ))
+
+log "Сервис Gitea успешно остановлен ($gitea_stop_timer sec.)"

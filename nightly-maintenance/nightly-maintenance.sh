@@ -93,6 +93,8 @@ id "$GITEA_USER" &>/dev/null                  || fail "Пользователь 
 [[ -d "$GITEA_LFS_BACKUP_DIR" ]]              || fail "Директория зеркала LFS-хранилища не найдена: $GITEA_LFS_BACKUP_DIR"
 
 
+
+
 #####################
 # Обслуживание Gitea
 #####################
@@ -100,7 +102,9 @@ id "$GITEA_USER" &>/dev/null                  || fail "Пользователь 
 log "Начат этап обслуживания Gitea"
 
 # Остановка сервиса Gitea
-source "$BASE_DIR/lib/gitea-stop.sh"
+if systemctl is-active --quiet gitea; then
+    source "$BASE_DIR/lib/gitea-stop.sh"
+fi
 
 log "Начало резервного копирования Gitea..."
 
