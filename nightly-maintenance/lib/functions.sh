@@ -57,7 +57,7 @@ dump_rotate() {
     for (( i=0; i<remove_count; i++ )); do
         local dump_to_remove="$GITEA_DUMP_DIR/${dumps[i]}"
         rm -f -- "$dump_to_remove" || fail "Не удалось удалить: $dump_to_remove"
-        log "Удалён дамп: $dump_to_remove"
+        log "Удалён дамп: ${dumps[i]}"
     done
 
     log "Ротация дампов успешно завершена"
