@@ -33,4 +33,4 @@ while systemctl is-active --quiet gitea; do
     fi
 done
 
-log "Сервис Gitea успешно остановлен за ${timer} секунд"
+log "Сервис Gitea успешно остановлен ($timer sec.)"
