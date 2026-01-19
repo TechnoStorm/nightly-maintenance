@@ -51,8 +51,8 @@ log "Запущен сценарий ночного техобслуживани
 TMP_DIR=$(mktemp -d /tmp/nightly-maintenance.XXXXXX 2>/dev/null) ||
     fail "Не удалось создать временную директорию"
 
-# Принудительно удаляем $DIR_TEMP даже в случае прерывания скрипта
-trap 'rm -rf "$TMP_DIR"' EXIT
+# Принудительно удаляем $TMP_DIR (если он создан) даже в случае прерывания скрипта
+trap '[[ -d "$TMP_DIR" ]] && rm -rf "$TMP_DIR"' EXIT
 
 # Меняем текущую директорию на $TMP_DIR
 cd "$TMP_DIR" || fail "Не перейти в TMP_DIR"
