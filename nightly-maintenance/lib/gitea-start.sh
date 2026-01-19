@@ -18,7 +18,7 @@ gitea_start_timer=$SECONDS
 # Запускаем Gitea, без блокировки выполнения скрипта (что бы цикл таймаута работал)
 systemctl start gitea --no-block || fail "systemctl не смог запустить сервис Gitea"
 
-MAX_WAIT=30 # максимальное время ожидания
+MAX_WAIT=60 # максимальное время ожидания
 timer=0
 
 # Проверка HTTP-ответа от Gitea
