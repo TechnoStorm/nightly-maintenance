@@ -35,4 +35,4 @@ done
 # Вычисляем прошедшее время
 gitea_stop_timer=$(( SECONDS - gitea_stop_timer ))
 
-log "Сервис Gitea успешно остановлен ($gitea_stop_timer sec.)"
+log "Сервис Gitea успешно остановлен ($gitea_stop_timer сек.)"
