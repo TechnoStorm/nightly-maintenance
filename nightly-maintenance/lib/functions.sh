@@ -31,6 +31,8 @@ dump_rotate() {
 
     log "Ротация дампов..."
 
+    [[ -d "$TMP_DIR" ]] || fail "Ротация дампов не удалась - $TMP_DIR не обнаружена"
+
     # Формируем массив имён дампов
     mapfile -t dumps < <(
         find "$GITEA_DUMP_DIR" \
@@ -70,6 +72,8 @@ log_rotate() {
 
         # Отменяем ротацию, если лог не длинней $MAX_LOG_LINES
         (( $(wc -l < "$LOG_FILE") > $MAX_LOG_LINES )) || return 0
+
+        [[ -d "$TMP_DIR" ]] || fail "Ротация лога не удалась - $TMP_DIR не обнаружена"
 
         # Создаём временный файл лога, с уникальным именем
         local tmp_log
