@@ -2,7 +2,8 @@
 # config.sh
 # Файл конфигурации для nightly-maintenance.sh
 
-
+SSD_MIN_FREE_SPACE="20" # минимальное свободное место на SSD (GB)
+HDD_MIN_FREE_SPACE="20" # минимальное свободное место на HDD (GB)
 HDD_MOUNT_POINT="/srv/hdd" # точка монтирования HDD для бэкапов
 
 

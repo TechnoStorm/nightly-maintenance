@@ -26,6 +26,34 @@ fail() {
 }
 
 
+# Функция проверки свободного места
+check_free_space() {
+
+    local storage_type="${1-}"
+    local path="${2-}" # путь проверки свободного места
+    local min_gb="${3-}" # минимальное свободное место (GB)
+
+    # Проверки аргументов
+    [[ -z "$storage_type" || -z "$path" || -z "$min_gb" ]] && \
+        fail "В функцию check_free_space() переданы не все аргументы"
+    [[ -e "$path" ]] || \
+        fail "Путь переданный в функцию check_free_space() не существует"
+
+    # Определяем свободное место
+    local free_gb
+    free_gb=$(LC_ALL=C df -BG "$path" | awk 'NR==2 {gsub("G","",$4); print $4}')
+
+    [[ -n "$free_gb" ]] || fail "Не удалось определить свободное место на $storage_type"
+
+    # Проверяем: достаточно-ли свободного места для продолжения выполнения сценария?
+    if (( free_gb < min_gb )); then
+        fail "Недостаточно свободного места на $storage_type: $free_gb GB"
+    fi
+
+    log "Оставшееся свободное место на $storage_type: $free_gb GB"
+}
+
+
 # Функция ротации дамп-файлов
 dump_rotate() {
 

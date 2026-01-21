@@ -97,6 +97,12 @@ id "$GITEA_USER" &>/dev/null                  || fail "Пользователь 
 [[ -d "$SYNC_DIR" ]]                          || fail "Директория сихронизации Syncthing не найдена: $SYNC_DIR"
 [[ -d "$SYNC_BACKUP_DIR" ]]                   || fail "Директория для зеркалирования папок Syncthing не найдена: $SYNC_BACKUP_DIR"
 
+# Проверяем свободное место на SSD
+check_free_space "SSD" "/" "$SSD_MIN_FREE_SPACE"
+
+# Проверяем свободное место на HDD
+check_free_space "HDD" "$HDD_MOUNT_POINT" "$HDD_MIN_FREE_SPACE"
+
 
 #####################
 # Обслуживание Gitea
