@@ -14,7 +14,7 @@ if rsync -aH --delete --numeric-ids --stats \
     "$SYNC_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
 
-    log "" # отступ
+    echo "" >> "$LOG_FILE" # отступ
     log "Зеркалирование директории Syncthing успешно завершено"
 else
     fail "Ошибка выполнения зеркалирования средствами rsync"
