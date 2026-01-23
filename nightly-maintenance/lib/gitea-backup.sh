@@ -95,10 +95,16 @@ if (( ${#repos[@]} > 0 )); then
     # Итог проверки
     if [[ $all_repos_ok = true ]]; then
 
-        # Вычисляем прошедшее время
-        git_fsck_timer=$(( SECONDS - git_fsck_timer ))
+        # Вычисляем время проверки
+        git_fsck_timer=$(( SECONDS - git_fsck_timer )) # общее количество секунд ушедших на проверку
+        git_fsck_minutes=$(( git_fsck_timer / 60 ))
+        git_fsck_seconds=$(( git_fsck_timer % 60 ))
 
-        log "Проверка репозиториев Gitea успешно завершена ($git_fsck_timer сек.)"
+        if (( git_fsck_minutes == 0 )); then
+            log "Проверка репозиториев Gitea успешно завершена ($git_fsck_seconds сек.)"
+        else
+            log "Проверка репозиториев Gitea успешно завершена ($git_fsck_minutes мин. $git_fsck_seconds сек.)"
+        fi
     else
         fail "Обнаружены повреждённые репозитории Gitea"
     fi
