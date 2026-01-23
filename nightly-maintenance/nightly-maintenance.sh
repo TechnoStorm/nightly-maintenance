@@ -71,6 +71,8 @@ cd "$TMP_DIR" || fail "Не перейти в TMP_DIR"
 (( EUID == 0 ))                               || fail "Скрипт запущен не от root"
 
 # Проверяем наличие необходимых утилит
+command -v git >/dev/null 2>&1                || fail "git не установлен"
+command -v git-lfs >/dev/null 2>&1            || fail "git-lfs не установлен"
 command -v sqlite3 >/dev/null 2>&1            || fail "sqlite3 не установлен"
 command -v rsync >/dev/null 2>&1              || fail "rsync не установлен"
 command -v jq >/dev/null 2>&1                 || fail "jq не установлен"
