@@ -117,12 +117,8 @@ if systemctl is-active --quiet gitea; then
     source "$BASE_DIR/lib/gitea-stop.sh"
 fi
 
-log "Начало резервного копирования Gitea..."
-
 # Резервное копирование данных Gitea
 source "$BASE_DIR/lib/gitea-backup.sh"
-
-log "Резервное копирование данных Gitea успешно завершено"
 
 # Проверяем, что сегодня понедельник
 if [[ "$(date +%u)" -eq 1 ]]; then
