@@ -66,6 +66,8 @@ GITEA_NEW_BIN_FILE="gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
 GITEA_BIN_URL="https://github.com/go-gitea/gitea/releases/download/v$GITEA_LATEST_VERSION/gitea-$GITEA_LATEST_VERSION-$GITEA_SYSTEM"
 GITEA_SHA256_URL="$GITEA_BIN_URL.sha256"
 
+download_timer=$SECONDS
+
 log "Загрузка нового бинарного файла Gitea: $GITEA_NEW_BIN_FILE..."
 
 curl -fsSL "$GITEA_BIN_URL" -o "$GITEA_NEW_BIN_FILE" ||
@@ -76,7 +78,17 @@ log "Загрузка контрольной суммы: $GITEA_NEW_BIN_FILE.sha
 curl -fsSL "$GITEA_SHA256_URL" -o "$GITEA_NEW_BIN_FILE.sha256" ||
     fail "Не удалось загрузить контрольную сумму: $GITEA_NEW_BIN_FILE.sha256"
 
-log "Загрузка файлов успешно завершена"
+
+# Вычисляем время загрузки
+download_timer=$(( SECONDS - download_timer )) # общее количество секунд ушедших на загрузку
+download_minutes=$(( download_timer / 60 ))
+download_seconds=$(( download_timer % 60 ))
+
+if (( download_minutes == 0 )); then
+    log "Загрузка файлов успешно завершена ($download_seconds сек.)"
+else
+    log "Загрузка файлов успешно завершена ($download_minutes мин. $download_seconds сек.)"
+fi
 
 
 #############################
