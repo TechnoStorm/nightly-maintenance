@@ -154,7 +154,7 @@ dump_rotate
 log "Зеркалирование Git-репозиториев..."
 
 # Выполняем зеркалирование
-if rsync -aH --delete --numeric-ids --stats \
+if rsync -aH --numeric-ids --stats \
     "$GITEA_GIT_DIR"/ \
     "$GITEA_GIT_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
@@ -173,7 +173,7 @@ fi
 log "Зеркалирование LFS-хранилища..."
 
 # Выполняем зеркалирование
-if rsync -aH --delete --numeric-ids --stats \
+if rsync -aH --numeric-ids --stats \
     "$GITEA_LFS_DIR"/ \
     "$GITEA_LFS_BACKUP_DIR"/ \
     >> "$LOG_FILE" 2>&1; then
