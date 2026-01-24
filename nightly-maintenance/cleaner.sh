@@ -10,7 +10,6 @@ set -euo pipefail
 # Скрипт очистки бэкапов NAS
 #############################
 
-
 # Определяем абсолютный путь текущего скрипта
 BASE_DIR="$(dirname "$(readlink -f "$0")")"
 
@@ -72,17 +71,19 @@ size_diff() {
     else
         echo "Мусор : Нет"
     fi
+
+    echo
 }
 
+# Очищаем терминал
 clear
 
 echo
-
 echo "Скрипт очистки бэкапов NAS"
 echo
 
+# Выводим статистику размеров директорий
 size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "Git"
-echo
 size_diff "$GITEA_LFS_DIR" "$GITEA_LFS_BACKUP_DIR" "LFS"
 
 if [[ $trash_detected == false ]]; then
@@ -101,6 +102,7 @@ echo
 
 read -rp "Введите номер: " choice
 
+# Запрашиваем выбор пользователя
 case "$choice" in
     1) TARGET="GIT" ;;
     2) TARGET="LFS" ;;
@@ -117,6 +119,7 @@ fi
 echo
 echo "Вы выбрали: $TARGET"
 echo
+
 
 read -rp "Вы уверены, что хотите начать очистку (N/y)? " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
@@ -167,3 +170,7 @@ esac
 echo
 echo "Процесс очистки завершён"
 echo
+
+# Напоследок ещё раз выводим статистику размеров директорий
+size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "Git"
+size_diff "$GITEA_LFS_DIR" "$GITEA_LFS_BACKUP_DIR" "LFS"
