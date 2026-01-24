@@ -22,41 +22,9 @@ source "$BASE_DIR/config.sh"
 # Меню скрипта
 ###############
 
-# Функция вычисления разницы по весу
-size_diff() {
-    local src="$1"
-    local bcp="$2"
-    local type="$3"
-
-    if [[ ! -d "$src" ]]; then
-        echo "[ERROR]: Исходная директория не найдена: $src"
-        exit 1
-    fi
-
-    if [[ ! -d "$bcp" ]]; then
-        echo "[ERROR]: Директория бэкапа не найдена: $bcp"
-        exit 1
-    fi
-
-    local src_size bcp_size size_diff
-    src_size=$(du -sb "$src" | awk '{print $1}')
-    bcp_size=$(du -sb "$bcp" | awk '{print $1}')
-    size_diff=$(( src_size - bcp_size ))
-
-    echo "$type-исходник   : $src_size байт ($(numfmt --to=iec $src_size))"
-    echo "$type-бэкап      : $bcp_size байт ($(numfmt --to=iec $bcp_size))"
-    echo "Мусор          : $size_diff байт ($(numfmt --to=iec $size_diff))"
-}
-
 clear
 
 echo "Скрипт очистки бэкапов NAS"
-echo
-echo "-----------------------------------"
-size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "Git"
-echo "-----------------------------------"
-size_diff "$GITEA_LFS_DIR" "$GITEA_LFS_BACKUP_DIR"  "LFS"
-echo "-----------------------------------"
 echo
 echo "Выберите цель очистки:"
 echo "1 - Git-репозитории"
