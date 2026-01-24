@@ -52,7 +52,7 @@ echo
 echo "Вы выбрали: $TARGET"
 echo
 
-read -rp "Вы уверены, что хотите начать очистку (N/y)?" confirm
+read -rp "Вы уверены, что хотите начать очистку (N/y)? " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
     echo
     echo "Очистка отменена"
@@ -81,7 +81,7 @@ clean() {
 
     echo "Начат процесс очиски: $bcp"
 
-    if ! rsync -aH --ignore-existing --delete --stats --dry-run "$src/" "$bcp/"; then
+    if ! rsync -aH  --numeric-ids --delete --stats --dry-run "$src/" "$bcp/"; then
         echo "[ERROR]: Ошибка выполнения Rsync"
         exit 1
     fi
@@ -92,5 +92,6 @@ case "$TARGET" in
     LFS) clean "$GITEA_LFS_DIR" "$GITEA_LFS_BACKUP_DIR";;
 esac
 
+echo
 echo "Процесс очистки завершён"
 echo
