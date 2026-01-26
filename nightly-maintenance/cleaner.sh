@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # cleaner.sh
-# Скрипт очистки бэкапов NAS
+# Скрипт очистки бэкапов Gitea
 
 # Принудительно прерываем скрипт при ошибках, и неинициализированных переменных
 set -euo pipefail
@@ -33,7 +33,8 @@ mountpoint -q "$HDD_MOUNT_POINT" || {
 # Вывод статистики свободного места
 ####################################
 
-trash_detected=false # флаг наличия мусора
+git_trash_detected=false # флаг наличия Git-мусора
+lfs_trash_detected=false # флаг наличия LFS-мусора
 
 # Функция вычисления разницы по весу
 size_diff() {
@@ -66,13 +67,16 @@ size_diff() {
 
     if (( size_diff_result > 0 )); then
 
-        trash_detected=true
-        echo "Мусор: $size_diff_result байт ($(numfmt --to=iec $size_diff_result))"
-    else
-        echo "Мусор : Нет"
-    fi
+        # Переключаем соответствующий флаг
+        case "$type" in
+            GIT) git_trash_detected=true ;;
+            LFS) lfs_trash_detected=true ;;
+        esac
 
-    echo
+        echo "Мусор          : $size_diff_result байт ($(numfmt --to=iec $size_diff_result))"
+    else
+        echo "Мусор          : Нет"
+    fi
 }
 
 # Очищаем терминал
@@ -83,12 +87,16 @@ echo "Скрипт очистки бэкапов NAS"
 echo
 
 # Выводим статистику размеров директорий
-size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "Git"
+echo "-----------------------------------"
+size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "GIT"
+echo "-----------------------------------"
 size_diff "$GITEA_LFS_DIR" "$GITEA_LFS_BACKUP_DIR" "LFS"
+echo "-----------------------------------"
 
-if [[ $trash_detected == false ]]; then
+if [[ $git_trash_detected == false && $lfs_trash_detected == false ]]; then
     echo
     echo "Очистка не требуется"
+    echo
     exit 0
 fi
 
@@ -97,23 +105,36 @@ fi
 # Меню скрипта
 ###############
 
-echo
-echo "Выберите цель очистки:"
-echo "1 - Git-репозитории"
-echo "2 - LFS-хранилище"
-echo "3 - Выход"
-echo
-echo
+# Выводим меню, в соответствии с состоянием флагов наличия мусора
+if [[ $git_trash_detected == true && $lfs_trash_detected == true ]]; then
 
-read -rp "Введите номер: " choice
+    # Выводим меню
+    echo "Выберите цель очистки:"
+    echo
+    echo "1 - Git-репозитории"
+    echo "2 - LFS-хранилище"
+    echo "3 - Выход"
+    read -rp "Введите номер: " choice
 
-# Запрашиваем выбор пользователя
-case "$choice" in
-    1) TARGET="GIT" ;;
-    2) TARGET="LFS" ;;
-    3) TARGET="EXIT" ;;
-    *) echo; echo "[ERROR]: Неверный выбор"; exit 1 ;;
-esac
+    # Запрашиваем выбор пользователя
+    case "$choice" in
+        1) TARGET="GIT" ;;
+        2) TARGET="LFS" ;;
+        3) TARGET="EXIT" ;;
+        *) echo; echo "[ERROR]: Неверный выбор"; exit 1 ;;
+    esac
+
+    echo
+    echo "Вы выбрали: $TARGET"
+    echo
+elif [[ $git_trash_detected == true ]]; then
+
+    TARGET="GIT"
+
+elif [[ $lfs_trash_detected == true ]]; then
+
+    TARGET="LFS"
+fi
 
 if [[ "$TARGET" == "EXIT" ]]; then
     echo
@@ -122,11 +143,7 @@ if [[ "$TARGET" == "EXIT" ]]; then
 fi
 
 echo
-echo "Вы выбрали: $TARGET"
-echo
-
-
-read -rp "Вы уверены, что хотите начать очистку (N/y)? " confirm
+read -rp "Вы уверены, что хотите начать очистку $TARGET (N/y)? " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
     echo
     echo "Очистка отменена"
@@ -153,8 +170,6 @@ clean() {
         exit 1
     fi
 
-    echo "Начат процесс очистки: $bcp"
-
     # Перестраховочная проверка аргументов
     [[ -n "$src" && -n "$bcp" && "$bcp" != "/" ]] || {
         echo "[ERROR]: Неправильные аргументы функции"
@@ -177,5 +192,8 @@ echo "Процесс очистки завершён"
 echo
 
 # Напоследок ещё раз выводим статистику размеров директорий
-size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "Git"
+echo "-----------------------------------"
+size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "GIT"
+echo "-----------------------------------"
 size_diff "$GITEA_LFS_DIR" "$GITEA_LFS_BACKUP_DIR" "LFS"
+echo "-----------------------------------"
