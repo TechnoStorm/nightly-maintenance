@@ -121,7 +121,7 @@ log "Создание дампа Gitea..."
 
 DUMP_TIMESTAMP=$(date +%F_%H_%M_%S)
 
-# Делаем дамп gitea, игнорируя LFS-хранилище
+# Делаем дамп gitea, игнорируя репозитории и LFS-хранилище
 # Логгируем только ошибки ошибки
 # Запускаем НЕ от root, так как root отклоняется самой gitea
 if sudo -u "$GITEA_USER" "$GITEA_BIN_FILE" dump \
