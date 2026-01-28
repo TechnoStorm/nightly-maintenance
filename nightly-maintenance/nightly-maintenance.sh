@@ -153,7 +153,7 @@ log "Этап обслуживания Gitea успешно завершён"
 ############################################
 
 # Резервное копирование директории Syncthing
-source "$BASE_DIR/lib/sync-backup.sh"
+#source "$BASE_DIR/lib/sync-backup.sh"
 
 
 #####################
