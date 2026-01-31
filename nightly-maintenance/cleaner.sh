@@ -176,7 +176,7 @@ clean() {
         exit 1
     }
 
-    if ! rsync -aH --existing --delete --stats --dry-run "$src/" "$bcp/"; then
+    if ! rsync -aH --existing --delete --stats "$src/" "$bcp/"; then
         echo "[ERROR]: Ошибка выполнения Rsync"
         exit 1
     fi
