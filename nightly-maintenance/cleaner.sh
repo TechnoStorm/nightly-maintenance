@@ -87,11 +87,11 @@ echo "Скрипт очистки бэкапов NAS"
 echo
 
 # Выводим статистику размеров директорий
-echo "-----------------------------------"
+echo "----------------------------------------"
 size_diff "$GITEA_GIT_DIR" "$GITEA_GIT_BACKUP_DIR" "GIT"
-echo "-----------------------------------"
+echo "----------------------------------------"
 size_diff "$GITEA_LFS_DIR" "$GITEA_LFS_BACKUP_DIR" "LFS"
-echo "-----------------------------------"
+echo "----------------------------------------"
 
 if [[ $git_trash_detected == false && $lfs_trash_detected == false ]]; then
     echo
